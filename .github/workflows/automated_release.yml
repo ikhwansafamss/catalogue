@@ -1,0 +1,50 @@
+name: Quarterly release
+on:
+  schedule:
+    - cron: '0 0 1 */2 *'  # 4 times a year: “At 00:00 on day-of-month 1 in every 3rd month.” ; see https://crontab.guru/every-quarter
+  
+jobs:
+  quarterly-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # latest commit only
+
+      - name: install python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+      
+      - name: copy work-in-progress folder
+        run: |
+          releasename="v$(date +%Y-%m-%d)"
+          python create_release.py $releasename
+        shell:
+          bash
+
+      - name: commit the changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git commit -m "create release" -a
+
+      - name: push the changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           branch: main
+
+      - name: tag the release
+        run: |
+          releasename="v$(date +%Y-%m-%d)"
+          git tag -a $releasename -m "release version $releasename"
+        shell:
+          bash
+
+      - name: push the tag
+        run: |
+          releasename="v$(date +%Y-%m-%d)"
+          git push origin $releasename
