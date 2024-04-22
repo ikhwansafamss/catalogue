@@ -74,6 +74,10 @@
                                 title: 'City'   // use this as the header for the datatable column
                             },
                             { 
+                                data: 'Library',   // use this column in the TSV data
+                                title: 'Library'   // use this as the header for the datatable column
+                            },
+                            { 
                                 data: '(Collection + ) Call Number', 
                                 title: 'Call number' 
                             },
@@ -84,7 +88,16 @@
                             { 
                                 data: 'Date CE', 
                                 title: 'Date (CE)'
-                            }
+                            }, 
+                            { 
+                                data: 'Witness to text', 
+                                title: 'Text'
+                            },
+                            // add columns that should be searchable but not shown:
+                            {
+                                data: 'Specific contents',
+                                visible: false
+                            },
                         ]
                     });
                     // Add event listener for opening and closing details
