@@ -5,120 +5,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ikhwān manuscripts</title>
+    <!--
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css" />
+    -->
+    <link rel="stylesheet" href="css/dataTables.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <!--
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dataTables.js"></script>
+    <script src="js/papaparse.min.js"></script>
 </head>
 <body>
     <div id="header">
-        <h1>Ikwān al-ṣafā manuscripts</h1>
+        <!--
+        <div id="title-wrapper">
+            <div class="header-title title-background">
+                <h1 >Ikhwān al-Ṣafā manuscripts</h1>
+            </div>
+            <div class="header-title title-foreground">
+                <h1>Ikhwan al-Safa manuscripts</h1>
+            </div>
+        </div>
+        <img class="colophon" src="img/colophon.svg"/>
+        -->
+        <img class="colophon" src="img/colophon2.svg"/>
     </div>
     <div id="tableDiv">
-        <table id="msTable" class="display"></table>
+        <!--<table id="msTable" class="display"></table> --> 
+        <table id="msTable" class="cell-border"></table>  <!--display cell borders-->
     </div>
     <div id="footer">
-      <p>Data collected by Gowaart Van Den Bossche</p>
+      <p>Data collected by Gowaart Van Den Bossche. Website by Peter Verkinderen.</p>
+      <p>View data on <a href="https://github.com/pverkind/IkhwanMss/data">GitHub.</a></p>
     </div>
     
-
-    <script>
-        function preprocessData(data){
-            return data
-        }
-
-        // hidden child rows, see https://datatables.net/examples/api/row_details.html
-        function format(rowData) {
-            // `rowData` is the original data object for the row
-            let hiddenRowHtml = '<dl>';
-            for (k in rowData){
-                if (rowData[k]){
-                    hiddenRowHtml += `
-                    <dt><b>${k}:</b></dt>
-                    <dd>${rowData[k]}</dd>
-                    `;
-                }
-            }
-            hiddenRowHtml += '</dl>';
-            return hiddenRowHtml;
-        }
-
-        let table;
-
-        let tsvPath = "tsv/IkhwanSafaMSSOverview - Blad1.tsv";
-        $.get(tsvPath, function(contents) {
-            // pass contents of file to Papa.parse to parse the tsv into a list of dictionaries:
-            Papa.parse(contents,  {
-                header: true,         // each row will become a dictionary
-                delimiter: '\t',
-                dynamicTyping: true,  // interpret numbers as integers, strings as strings etc.
-                quoteChar: false,     // consider quote characters " and ' as literal quotes
-                skipEmptyLines: true,
-                complete: function(results) {
-                    console.log(results);
-                    // after file is loaded, pass the data to the datatable:
-                    let data = preprocessData(results.data)
-                    table = $('#msTable').DataTable( {
-                        data: data,
-                        pageLength: 25,  // number of rows displayed by default
-                        columns: [  // define the columns that should be displayed
-                            {
-                                // first column: icon for showing collapsed detailed data
-                                className: 'dt-control',
-                                orderable: false,
-                                data: null,
-                                defaultContent: ''
-                            },
-                            { 
-                                data: 'City',   // use this column in the TSV data
-                                title: 'City'   // use this as the header for the datatable column
-                            },
-                            { 
-                                data: 'Library',   // use this column in the TSV data
-                                title: 'Library'   // use this as the header for the datatable column
-                            },
-                            { 
-                                data: '(Collection + ) Call Number', 
-                                title: 'Call number' 
-                            },
-                            { 
-                                data: 'Date AH', 
-                                title: 'Date (AH)' 
-                            },
-                            { 
-                                data: 'Date CE', 
-                                title: 'Date (CE)'
-                            }, 
-                            { 
-                                data: 'Witness to text', 
-                                title: 'Text'
-                            },
-                            // add columns that should be searchable but not shown:
-                            {
-                                data: 'Specific contents',
-                                visible: false
-                            },
-                        ]
-                    });
-                    // Add event listener for opening and closing details
-                    table.on('click', 'td.dt-control', function (e) {
-                        let tr = e.target.closest('tr');
-                        let row = table.row(tr);
-                    
-                        if (row.child.isShown()) {
-                            // This row is already open - close it
-                            row.child.hide();
-                        }
-                        else {
-                            // Open this row
-                            row.child(format(row.data())).show();
-                        }
-                    });
-                }
-            });
-        });   
-
-    </script>
+    <script src="js/index.js"></script>
     
 </body>
 </html>
