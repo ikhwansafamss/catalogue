@@ -89,8 +89,8 @@ def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
     
 
 def main():
-    sheet_fp = "../data/msData.tsv"
-    doc_fp = "../data/msDescriptions.docx"
+    sheet_fp = "./data/msData.tsv"
+    doc_fp = "./data/msDescriptions.docx"
     # NB: the word document doesn't download!
     #download_file_from_gdrive(doc_url, doc_fp)
     download_spreadsheet(sheet_url, sheet_fp)
