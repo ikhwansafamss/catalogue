@@ -6,6 +6,11 @@ function normalizeCallNo(s){
     return s.replace(/[^a-zA-Z0-9]+/g, "");
 }
 
+function cleanData(s) {
+    s = decodeURIComponent(s);
+    return s
+}
+
 // hidden child rows, see https://datatables.net/examples/api/row_details.html
 function format(rowData) {
     // `rowData` is the original data object for the row
@@ -44,7 +49,7 @@ function format(rowData) {
         if (rowData[k]){
             hiddenRowHtml += `
             <dt><b>${k}:</b></dt>
-            <dd>${rowData[k]}</dd>
+            <dd>${cleanData(rowData[k])}</dd>
             `;
         }
     }
