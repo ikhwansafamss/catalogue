@@ -81,7 +81,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             print("*", normalized_call_nos[call_no])
 
 
-doc_fp = "../data/msDescriptions.docx"
-sheet_fp = "../data/msData.tsv"
-json_fp = "../data/msDescriptions.json"
+doc_fp = "./data/msDescriptions.docx"
+sheet_fp = "./data/msData.tsv"
+json_fp = "./data/msDescriptions.json"
 parse_doc(doc_fp, sheet_fp, json_fp)
