@@ -6,6 +6,7 @@ NB: downloading the description document currently doesn't work!
 
 import requests
 import re
+import time
 
 doc_url = "https://docs.google.com/document/d/1hZuWEOd0tFTWL7yGuKAfQODVpSWjgf3rcvsQi5D7AC8/edit?usp=sharing"
 sheet_url = "https://docs.google.com/spreadsheets/d/1jBbUb7qObE02WkVdkerRty0MIBRWsBh4SzTK725k7bM/edit#gid=0"
@@ -93,7 +94,8 @@ def main():
     # NB: the word document doesn't download!
     #download_file_from_gdrive(doc_url, doc_fp)
     download_spreadsheet(sheet_url, sheet_fp)
-
+    print("sleep 5 seconds before updating website data")
+    time.sleep(5)
 
 main()
 
