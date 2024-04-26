@@ -90,6 +90,18 @@ td {
     border: 1px solid #cf705eff;
 }
 
+
+.hidden-table tr, td {
+    border: none;
+}
+.details-col {
+    min-width: 30%;
+}
+
+.columns {
+    column-count: 2;
+    min-width: 30%;
+}
 /*Override the default dropdown icon*/
 table.dataTable td.dt-control {
     text-align: center;

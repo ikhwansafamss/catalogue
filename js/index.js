@@ -5,7 +5,16 @@ function preprocessData(data){
 // hidden child rows, see https://datatables.net/examples/api/row_details.html
 function format(rowData) {
     // `rowData` is the original data object for the row
-    let hiddenRowHtml = '<dl>';
+    
+    
+    // get the description from the descriptions dictionary:
+    let city = rowData["City"].trim();
+    let lib = rowData["Library"].trim();
+    let callNo = String(rowData["(Collection + ) Call Number"]).trim();
+    let descr = descriptions[city][lib][callNo];
+
+    //
+    let hiddenRowHtml = '<dl class="columns">';
     for (k in rowData){
         if (rowData[k]){
             hiddenRowHtml += `
@@ -14,13 +23,40 @@ function format(rowData) {
             `;
         }
     }
+    hiddenRowHtml += `
+            <dt><b>Description:</b></dt>
+            <dd>${descr}</dd>
+            `;
     hiddenRowHtml += '</dl>';
+
+    
+    /*hiddenRowHtml = `
+    <table class="hidden-table">
+      <tr>
+        <td class="details-col">
+          ${hiddenRowHtml}
+        </td>
+        <td class="descr-col">
+          <b>Description</b>: <br/>
+          ${descr}
+        </td>
+      </tr>
+    </table>
+    `*/
     return hiddenRowHtml;
 }
 
 let table;
+let descriptions;
 
-let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
+let jsonPath = "data/msDescriptions.json";
+$.get(jsonPath, function(contents) {
+    descriptions = contents;
+});
+
+
+//let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
+let tsvPath = "data/msData.tsv"
 $.get(tsvPath, function(contents) {
     // pass contents of file to Papa.parse to parse the tsv into a list of dictionaries:
     Papa.parse(contents,  {
