@@ -44,72 +44,54 @@
     padding-left: 5%;
     padding-right: 5%;
     margin-top: 20px;
+    font-family: "Noto Sans Display";
 }
 
 .dt-column-title {
     color: #cf705eff;
 }
 
+/* Red colours for the table borders:*/
+
 table {
-    /*border-top: 2px solid #cf705eff;
-    border-bottom: 2px solid #cf705eff;
-    border-left: 2px solid #cf705eff;
-    border-right: 2px solid #cf705eff;*/
     border: 3px double #cf705eff;
-    /*border-radius: 1px;*/
+    border-radius: 1px;
 }
 
 th {
-    /*border-top: 1px solid #cf705eff;
-    border-bottom: 1px solid #cf705eff;
     border-left: 1px solid #cf705eff;
-    border-right: 1px solid #cf705eff;*/
-    /*border: 1px solid #cf705eff;*/
-    border-left: 1px solid #cf705eff;
-}
-
-thead {
-    border: 1px solid #cf705eff;
-    border-bottom: none;
-}
-tbody {
-    /*border: 1px solid #cf705eff;*/
-    border-top: 1px solid #cf705eff;
-}
-
-tr {
-    /*border-top: 1px solid #cf705eff;
-    border-bottom: 1px solid #cf705eff;
-    border-left: 1px solid #cf705eff;
-    border-right: 1px solid #cf705eff;*/
-    border: 1px solid yellow;
 }
 
 td {
-    /*border-top: 1px solid #cf705eff;
-    border-bottom: 1px solid #cf705eff;
-    border-left: 1px solid #cf705eff;
-    border-right: 1px solid #cf705eff;*/
     border: 1px solid #cf705eff;
 }
 
+/* Remove grey "shadow" from table cell borders: */
 table.dataTable.cell-border > tbody > tr > * {
     border-top: 1px solid rgba(0, 0, 0, 0.0);
     border-right: 1px solid rgba(0, 0, 0, 0.0);
-  }
-  table.dataTable.cell-border > tbody > tr > *:first-child {
+}
+table.dataTable.cell-border > tbody > tr > *:first-child {
     border-left: 1px solid rgba(0, 0, 0, 0.0);
-  }
-  table.dataTable.cell-border > tbody > tr:first-child > * {
+}
+table.dataTable.cell-border > thead > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > tbody > tr:first-child > * {
     border-top: 1px solid rgba(0, 0, 0, 0.0);
-  }
+}
 
+
+/* make sure that the details are in two columns: */
 .columns {
     column-count: 2;
 }
-
 .columns p {
     margin: 3px;
+    overflow-wrap: break-word;
+}
+.columns dd {
+    overflow-wrap: anywhere;
 }
 
 
@@ -120,7 +102,7 @@ table.dataTable td.dt-control {
     font-size: 30px;
     color: #cf705eff;
   }
-  table.dataTable td.dt-control:before {
+table.dataTable td.dt-control:before {
     display: inline-block;
     box-sizing: border-box;
     content: "؞";
@@ -135,8 +117,8 @@ table.dataTable td.dt-control {
     border-left: 10px solid rgba(0, 0, 0, 0.5);
     border-bottom: 5px solid transparent;
     border-right: 0px solid transparent;*/
-  }
-  table.dataTable tr.dt-hasChild td.dt-control:before {
+}
+table.dataTable tr.dt-hasChild td.dt-control:before {
     border-top: 0px solid transparent;
     border-left: 0px solid transparent;
     border-bottom: 0px solid transparent;
@@ -148,14 +130,14 @@ table.dataTable td.dt-control {
     border-left: 5px solid transparent;
     border-bottom: 0px solid transparent;
     border-right: 5px solid transparent;*/
-  }
+}
   
-  html.dark table.dataTable td.dt-control:before,
+html.dark table.dataTable td.dt-control:before,
   :root[data-bs-theme=dark] table.dataTable td.dt-control:before {
     border-left-color: rgba(255, 255, 255, 0.5);
-  }
-  html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
+}
+html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
   :root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
     border-top-color: rgba(255, 255, 255, 0.5);
     border-left-color: transparent;
-  }
+}

@@ -7,9 +7,28 @@ from docx import Document
 import json
 import csv
 import re
+import urllib
+import textwrap
 
 def normalize_call_no(s):
     return re.sub("[^a-zA-Z0-9]+", "", s)
+
+def clean_paragraph(p):
+    # remove double spaces:
+    p = re.sub("  +", " ", p)
+    # decode URLs that contain Arabic script:
+    if "%D8" in p or "%B" in p:
+        p = urllib.parse.unquote(p)
+    # break long URLs:
+    long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]
+    if long_words:
+        print(long_words)
+    for w in long_words:
+        w = w.strip("().")
+        broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
+        p = re.sub(w, broken_w, p)
+
+    return p
     
 
 def parse_doc(doc_fp, sheet_fp, json_fp):
@@ -30,16 +49,16 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         elif paragraph.style.name.startswith('Heading 3'):
             call_nos.append(paragraph.text)
             call_no = normalize_call_no(paragraph.text)
-            d[city][lib][call_no] = ""
-            
+            d[city][lib][call_no] = ""            
         else:
-            if paragraph.text.strip():
+            text = clean_paragraph(paragraph.text.strip())
+            if text:
                 try:
-                    d[city][lib][call_no] += '<p dir="auto">' + paragraph.text.strip() + '</p>'
+                    d[city][lib][call_no] += '<p dir="auto">' + text + '</p>'
                 except:
-                    print("Error in paragraph no.", i)
-                    print([city, lib, call_no])
-                    print([paragraph.text])
+                    print("Error converting paragraph no.", i)
+                    print("city, library, call number:", [city, lib, call_no])
+                    print("paragraph text:", [paragraph.text])
                     print("----")
     with open(json_fp, mode="w", encoding="utf-8") as file:
         json.dump(d, file, indent=2, ensure_ascii=False)
