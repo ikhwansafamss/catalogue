@@ -95,6 +95,5 @@ def main():
     download_spreadsheet(sheet_url, sheet_fp)
 
 
-if __name__ == "__main__":
-    main()
+main()
 
