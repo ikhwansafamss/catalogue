@@ -2,6 +2,10 @@ function preprocessData(data){
     return data
 }
 
+function normalizeCallNo(s){
+    return s.replace(/[^a-zA-Z0-9]+/g, "");
+}
+
 // hidden child rows, see https://datatables.net/examples/api/row_details.html
 function format(rowData) {
     // `rowData` is the original data object for the row
@@ -9,12 +13,33 @@ function format(rowData) {
     
     // get the description from the descriptions dictionary:
     let city = rowData["City"].trim();
-    let lib = rowData["Library"].trim();
-    let callNo = String(rowData["(Collection + ) Call Number"]).trim();
+    let lib = String(rowData["Library"]).trim();
+    let callNo = normalizeCallNo(String(rowData["(Collection + ) Call Number"]));
+    console.log("city:" + city);
+    console.log("lib:" + lib);
+    console.log("callNo:" + callNo);
     let descr = descriptions[city][lib][callNo];
+    
 
-    //
-    let hiddenRowHtml = '<dl class="columns">';
+    /*let hiddenRowHtml = '<div class="columns" dir="auto">';
+    for (k in rowData){
+        if (rowData[k]){
+            hiddenRowHtml += `
+            <div class="entry">
+              <p><strong>${k}:</strong></p>
+              <p>${rowData[k]}</p>
+            </div>
+            `;
+        }
+    }
+    hiddenRowHtml += `
+            <div class="entry">
+              <p><strong>Description:</strong></p>
+              ${descr}
+            </div>
+            `;
+    hiddenRowHtml += '</div>';*/
+    let hiddenRowHtml = '<dl class="columns" dir="auto">';
     for (k in rowData){
         if (rowData[k]){
             hiddenRowHtml += `

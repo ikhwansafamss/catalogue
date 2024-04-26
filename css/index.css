@@ -55,8 +55,8 @@ table {
     border-bottom: 2px solid #cf705eff;
     border-left: 2px solid #cf705eff;
     border-right: 2px solid #cf705eff;*/
-    border: 2px solid #cf705eff;
-    border-radius: 1px;
+    border: 3px double #cf705eff;
+    /*border-radius: 1px;*/
 }
 
 th {
@@ -64,23 +64,26 @@ th {
     border-bottom: 1px solid #cf705eff;
     border-left: 1px solid #cf705eff;
     border-right: 1px solid #cf705eff;*/
-    border: 1px solid #cf705eff;
+    /*border: 1px solid #cf705eff;*/
+    border-left: 1px solid #cf705eff;
 }
 
 thead {
-    border-bottom: 1px solid #cf705eff;
+    border: 1px solid #cf705eff;
+    border-bottom: none;
 }
 tbody {
+    /*border: 1px solid #cf705eff;*/
     border-top: 1px solid #cf705eff;
 }
 
-/*tr {
-    border-top: 1px solid #cf705eff;
+tr {
+    /*border-top: 1px solid #cf705eff;
     border-bottom: 1px solid #cf705eff;
     border-left: 1px solid #cf705eff;
-    border-right: 1px solid #cf705eff;
+    border-right: 1px solid #cf705eff;*/
     border: 1px solid yellow;
-}*/
+}
 
 td {
     /*border-top: 1px solid #cf705eff;
@@ -90,18 +93,26 @@ td {
     border: 1px solid #cf705eff;
 }
 
-
-.hidden-table tr, td {
-    border: none;
-}
-.details-col {
-    min-width: 30%;
-}
+table.dataTable.cell-border > tbody > tr > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+    border-right: 1px solid rgba(0, 0, 0, 0.0);
+  }
+  table.dataTable.cell-border > tbody > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+  }
+  table.dataTable.cell-border > tbody > tr:first-child > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+  }
 
 .columns {
     column-count: 2;
-    min-width: 30%;
 }
+
+.columns p {
+    margin: 3px;
+}
+
+
 /*Override the default dropdown icon*/
 table.dataTable td.dt-control {
     text-align: center;
