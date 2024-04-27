@@ -38,7 +38,7 @@ jobs:
       - name: check for changes to be committed
         id: check_changes
         run: |
-          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+          git add . && git diff --quiet && git diff --cached --quiet || echo "changed=true" >> $GITHUB_OUTPUT
         
       - name: commit any converted text files
         if: steps.check_changes.outputs.changed == 'true'
