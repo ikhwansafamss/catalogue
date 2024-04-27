@@ -88,6 +88,10 @@ def download_file_from_gdrive(url, fp):
         for chunk in response.iter_content(chunk_size=32768):
             if chunk:
                 f.write(chunk)
+    if os.path.exists(fp):
+        print(fp, os.path.get_size(fp))
+    else:
+        print(fp, "does not exist")
                 
 
 
