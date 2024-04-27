@@ -3,7 +3,7 @@ This repo contains a first draft of a website for Gowaart's metadata on Ikhwān 
 Temporary website address: https://pverkind.github.io/IkhwanMss/
 
 TO DO: 
-* GH Actions: automate downloading the docx file from the Google sheet + rebuilding website
+* GH Actions: versioning/releases?
 * user customization: let user decide which columns are shown in the table? (https://datatables.net/examples/api/show_hide.html)
 * separate landing page?
 
