@@ -21,8 +21,6 @@ def clean_paragraph(p):
         p = urllib.parse.unquote(p)
     # break long URLs:
     long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]
-    if long_words:
-        print(long_words)
     for w in long_words:
         w = w.strip("().")
         broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
