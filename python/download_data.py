@@ -75,6 +75,21 @@ def download_file_from_gdrive(url, fp):
 
     save_response_content(response, fp)    
 
+def download_file_from_gdrive(url, fp):
+    """https://stackoverflow.com/a/39225272"""
+    print("download file from google drive:", url)
+    file_id = extract_id_from_url(url)
+    print(file_id)
+    gurl = "https://docs.google.com/uc?export=download&confirm=1"
+    gurl = f"https://docs.google.com/document/d/{file_id}/export?format=docx"
+    session = requests.Session()
+    response = session.get(gurl, stream=True)
+    with open(fp, "wb") as f:
+        for chunk in response.iter_content(chunk_size=32768):
+            if chunk:
+                f.write(chunk)
+                
+
 
 def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
     file_id = extract_id_from_url(url)
@@ -91,8 +106,7 @@ def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
 def main():
     sheet_fp = "./data/msData.tsv"
     doc_fp = "./data/msDescriptions.docx"
-    # NB: the word document doesn't download!
-    #download_file_from_gdrive(doc_url, doc_fp)
+    download_file_from_gdrive(doc_url, doc_fp)
     download_spreadsheet(sheet_url, sheet_fp)
     print("sleep 5 seconds before updating website data")
     time.sleep(5)
