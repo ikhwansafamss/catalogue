@@ -25,6 +25,11 @@ def clean_paragraph(p):
         w = w.strip("().")
         broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
         p = re.sub(w, broken_w, p)
+    # add links:
+    p = re.sub('(?<!")(http[^ ]+)', r'<a href="\1">\1</a>', p)
+    # remove line breaks in links:
+    while re.findall('href="[^"]+<br/?>', p):
+        p = re.sub('href="([^"]+)<br/?>', r'\1', p)
 
     return p
     
