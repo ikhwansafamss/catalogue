@@ -7,6 +7,12 @@ function normalizeCallNo(s){
 }
 
 function cleanData(s) {
+    // add link to URLs:
+    s = s.replace(/(http[^ ]+)/g, '<a href="$1">$1</a>');
+    // remove line breaks from links: 
+    s = s.replace(/(href="[^"]+)<br/?>/g, '$1');
+    s = s.replace(/(href="[^"]+)<br/?>/g, '$1');
+    s = s.replace(/(href="[^"]+)<br/?>/g, '$1');
     s = decodeURIComponent(s);
     return s
 }
