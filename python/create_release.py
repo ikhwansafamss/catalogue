@@ -56,13 +56,18 @@ with open(revision_fp, mode="w", encoding="utf-8") as file:
 # create the release notes html file:
 with open(page_template_fp, mode="r", encoding="utf-8") as file:
     template_str = file.read()
-revision_fp = "./release-notes.html"
-with open(revision_fp, mode="w", encoding="utf-8") as file:
+wip_revision_fp = "work-in-progress/release-notes.html"
+with open(wip_revision_fp, mode="w", encoding="utf-8") as file:
     html = markdown.markdown(revision_text)
     html = template_str.replace("PAGE_CONTENT_HERE", html)
     file.write(html)
 
-# # Add a reference to the new release in all previous release notes + work-in-progress html file:
+# Add a reference to the new release in all previous release notes + work-in-progress html file:
+# for folder in sorted(os.listdir(".")):
+#     if re.findall("^v\d+", folder):
+#         earlier_revision_fp = os.path.join(folder, "release-notes.html")
+#         shutil.copy(wip_revision_fp, earlier_revision_fp)
+
 # for folder in sorted(os.listdir(".")):
 #     if re.findall("^v\d+", folder) or folder.startswith("work-in"):
 #         earlier_revision_fp = os.path.join(folder, "revision-and-update-notes.html")
@@ -95,6 +100,12 @@ html = html.replace("LATEST_VERSION_URL", release_url)
 with open("index.html", mode="w", encoding="utf-8") as file:
     file.write(html)
 
+# change the reference to the GitHub data folder in the release index.html file:
+index_fp = os.path.join(release_folder, "index.html")
+with open(index_fp, mode="r", encoding="utf-8") as file:
+    html = file.read()
+with open(index_fp, mode="w", encoding="utf-8") as file:
+    file.write(html.replace("work-in-progress/data", release_folder+"/data"))
 
 # print the name of the new folder so that it can be used by the workflow script:
 print(f'::set-output name=release_folder::{release_folder}')
