@@ -1,7 +1,5 @@
 """
 Download the spreadsheet and description document
-
-NB: downloading the description document currently doesn't work!
 """
 import os
 import requests
@@ -28,52 +26,52 @@ def extract_id_from_url(url):
             return ids[0]
     
 
-def download_file_from_gdrive(url, fp):
-    """https://stackoverflow.com/a/39225272"""
-    print("download file from google drive:", url)
-    file_id = extract_id_from_url(url)
-    print(file_id)
-    gurl = "https://docs.google.com/uc?export=download&confirm=1"
-    session = requests.Session()
-    response = session.get(gurl, params={"id": file_id, "confirm": 1}, stream=True)
-    with open(fp, "wb") as f:
-        for chunk in response.iter_content(chunk_size=32768):
-            if chunk:
-                f.write(chunk)
+# def download_file_from_gdrive(url, fp):
+#     """https://stackoverflow.com/a/39225272"""
+#     print("download file from google drive:", url)
+#     file_id = extract_id_from_url(url)
+#     print(file_id)
+#     gurl = "https://docs.google.com/uc?export=download&confirm=1"
+#     session = requests.Session()
+#     response = session.get(gurl, params={"id": file_id, "confirm": 1}, stream=True)
+#     with open(fp, "wb") as f:
+#         for chunk in response.iter_content(chunk_size=32768):
+#             if chunk:
+#                 f.write(chunk)
 
 
-def download_file_from_gdrive(url, fp):
-    """https://stackoverflow.com/a/39225039/4045481"""
-    def get_confirm_token(response):
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                return value
-        return None
+# def download_file_from_gdrive(url, fp):
+#     """https://stackoverflow.com/a/39225039/4045481"""
+#     def get_confirm_token(response):
+#         for key, value in response.cookies.items():
+#             if key.startswith('download_warning'):
+#                 return value
+#         return None
 
-    def save_response_content(response, destination):
-        CHUNK_SIZE = 32768
+#     def save_response_content(response, destination):
+#         CHUNK_SIZE = 32768
 
-        with open(destination, "wb") as f:
-            for chunk in response.iter_content(CHUNK_SIZE):
-                if chunk: # filter out keep-alive new chunks
-                    f.write(chunk)
+#         with open(destination, "wb") as f:
+#             for chunk in response.iter_content(CHUNK_SIZE):
+#                 if chunk: # filter out keep-alive new chunks
+#                     f.write(chunk)
 
-    print("download file from google drive:", url)
-    file_id = extract_id_from_url(url)
-    print(file_id)
+#     print("download file from google drive:", url)
+#     file_id = extract_id_from_url(url)
+#     print(file_id)
     
-    gurl = "https://docs.google.com/uc?export=download"
-    session = requests.Session()
-    response = session.get(gurl, params={"id": file_id}, stream=True)
-    token = get_confirm_token(response)
-    print(response)
-    print(token)
+#     gurl = "https://docs.google.com/uc?export=download"
+#     session = requests.Session()
+#     response = session.get(gurl, params={"id": file_id}, stream=True)
+#     token = get_confirm_token(response)
+#     print(response)
+#     print(token)
 
-    if token:
-        params = { "id" : file_id, 'confirm' : token }
-        response = session.get(gurl, params = params, stream = True)
+#     if token:
+#         params = { "id" : file_id, 'confirm' : token }
+#         response = session.get(gurl, params = params, stream = True)
 
-    save_response_content(response, fp)    
+#     save_response_content(response, fp)    
 
 def download_file_from_gdrive(url, fp):
     """https://stackoverflow.com/a/39225272"""
@@ -108,8 +106,8 @@ def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
     
 
 def main():
-    sheet_fp = "./data/msData.tsv"
-    doc_fp = "./data/msDescriptions.docx"
+    sheet_fp = "./work-in-progress/data/msData.tsv"
+    doc_fp = "./work-in-progress/data/msDescriptions.docx"
     download_file_from_gdrive(doc_url, doc_fp)
     download_spreadsheet(sheet_url, sheet_fp)
     print("sleep 5 seconds before updating website data")

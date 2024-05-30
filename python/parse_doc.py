@@ -11,7 +11,7 @@ import urllib
 import textwrap
 
 def normalize_call_no(s):
-    return re.sub("[^a-zA-Z0-9]+", "", s)
+    return re.sub("[^a-zA-Z0-9۰-۹?]+", "", s)
 
 def clean_paragraph(p):
     # remove double spaces:
@@ -50,9 +50,10 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             lib = paragraph.text.strip()
             d[city][lib] = dict()
         elif paragraph.style.name.startswith('Heading 3'):
-            call_nos.append(paragraph.text)
+            #call_nos.append(paragraph.text)
+            call_nos.append(lib + " " + paragraph.text)
             call_no = normalize_call_no(paragraph.text)
-            d[city][lib][call_no] = ""            
+            d[city][lib][call_no] = ""
         else:
             text = clean_paragraph(paragraph.text.strip())
             if text:
@@ -72,7 +73,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         reader = csv.DictReader(file, delimiter="\t")
         print("call numbers not found in the word document:")
         for row in reader:
-            call_no = normalize_call_no(str(row["(Collection + ) Call Number"]))
+            call_no = normalize_call_no(str(row["Library"])+ " " + str(row["(Collection + ) Call Number"]))
             if call_no not in normalized_call_nos:
                 print("*", [row["City"], row["Library"], row["(Collection + ) Call Number"].strip()])
             else:
@@ -84,7 +85,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             print("*", normalized_call_nos[call_no])
 
 
-doc_fp = "./data/msDescriptions.docx"
-sheet_fp = "./data/msData.tsv"
-json_fp = "./data/msDescriptions.json"
+doc_fp = "./work-in-progress/data/msDescriptions.docx"
+sheet_fp = "./work-in-progress/data/msData.tsv"
+json_fp = "./work-in-progress/data/msDescriptions.json"
 parse_doc(doc_fp, sheet_fp, json_fp)
