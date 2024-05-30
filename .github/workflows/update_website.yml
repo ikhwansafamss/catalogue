@@ -40,7 +40,7 @@ jobs:
         run: |
           git add . && git diff --quiet && git diff --cached --quiet || echo "changed=true" >> $GITHUB_OUTPUT
         
-      - name: commit any converted text files
+      - name: commit rebuilt website if it was changed
         if: steps.check_changes.outputs.changed == 'true'
         run: |
            git config --local user.email "github-actions[bot]@users.noreply.github.com"
