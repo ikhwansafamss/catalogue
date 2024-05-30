@@ -38,8 +38,8 @@ with open(revision_fp, mode="r", encoding="utf-8") as file:
     revision_text = file.read()
 
 # make the new release version the current version:
-revision_text = re.sub(r"The current release is.+", 
-                       f"The current release is **[{release_folder}]({release_url})**",
+revision_text = re.sub(r"The release you're looking at is.+", 
+                       f"The release you're looking at is **[{release_folder}]({release_url})**",
                        revision_text)
 
 # add the new release version to the release list (if it has not yet been manually added):
