@@ -2,7 +2,7 @@
 
 This website is updated and released periodically. 
 
-The current release is **[v2024-05-29](https://pverkind.github.io/IkhwanMss/v2024-05-29)**
+The current release is **[v2024-05-30](https://pverkind.github.io/IkhwanMss/v2024-05-30)**
 
 Please always cite the website including its release number 
 ([https://pverkind.github.io/IkhwanMss](https://pverkind.github.io/IkhwanMss) 
@@ -11,4 +11,5 @@ Released versions of the website are stable and will remain available.
 
 ## Release list:
 <!-- INSERT NEWER VERSION BELOW THIS -->
+* [v2024-05-30](https://pverkind.github.io/IkhwanMss/v2024-05-30)
 * [v2024-05-29](https://pverkind.github.io/IkhwanMss/v2024-05-29)

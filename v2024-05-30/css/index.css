@@ -1,0 +1,143 @@
+#header {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;    
+}
+
+#title-wrapper {
+    position: relative;
+}
+
+.header-title {
+    border: 1px solid #cf705eff;
+    border-radius: 75px;
+    /*padding: 20px;*/
+}
+
+.title-foreground {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #535C95;
+}
+.title-background {
+    color: #cf705eff;
+}
+
+/*.triangle {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 1px;
+}*/
+/*
+.colophon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 80%;
+}*/
+
+#tableDiv {
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 20px;
+    font-family: "Noto Sans Display";
+}
+
+.dt-column-title {
+    color: #cf705eff;
+}
+
+/* Red colours for the table borders:*/
+
+table {
+    border: 3px double #cf705eff;
+    border-radius: 1px;
+}
+
+th {
+    border-left: 1px solid #cf705eff;
+}
+
+td {
+    border: 1px solid #cf705eff;
+}
+
+/* Remove grey "shadow" from table cell borders: */
+table.dataTable.cell-border > tbody > tr > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+    border-right: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > tbody > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > thead > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > tbody > tr:first-child > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+}
+
+
+/* make sure that the details are in two columns: */
+.columns {
+    column-count: 2;
+}
+.columns p {
+    margin: 3px;
+    overflow-wrap: break-word;
+}
+.columns dd {
+    overflow-wrap: anywhere;
+}
+
+
+/*Override the default dropdown icon*/
+table.dataTable td.dt-control {
+    text-align: center;
+    cursor: pointer;
+    font-size: 30px;
+    color: #cf705eff;
+  }
+table.dataTable td.dt-control:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "؞";
+    transform: rotate(90deg);
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 0px solid transparent;
+    /*ORIGINAL (triangle):*/
+    /*content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid transparent;
+    border-right: 0px solid transparent;*/
+}
+table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 0px solid transparent;
+    content: "؞";
+    transform: rotate(180deg);
+    /*ORIGINAL (triangle):*/
+    /*border-top: 10px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 5px solid transparent;*/
+}
+  
+html.dark table.dataTable td.dt-control:before,
+  :root[data-bs-theme=dark] table.dataTable td.dt-control:before {
+    border-left-color: rgba(255, 255, 255, 0.5);
+}
+html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
+  :root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: transparent;
+}
