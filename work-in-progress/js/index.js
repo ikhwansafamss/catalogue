@@ -9,7 +9,7 @@ function normalizeCallNo(s){
 function cleanData(s) {
     if (typeof s === 'string' || s instanceof String) {
         // add link to URLs:
-        s = s.replace(/(http[^ ]+)/g, '<a href="$1">$1</a>');
+        s = s.replace(/(http[^ ]+)/g, '<a href="$1" target="_blank">$1</a>');
         // remove line breaks from links: 
         s = s.replace(/(href="[^"]+)<br\/?>/g, '$1');
         s = s.replace(/(href="[^"]+)<br\/?>/g, '$1');
