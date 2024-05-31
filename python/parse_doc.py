@@ -7,7 +7,7 @@ from docx import Document
 import json
 import csv
 import re
-import urllib
+import urllib.parse
 import textwrap
 
 def normalize_call_no(s):
@@ -26,10 +26,10 @@ def clean_paragraph(p):
         broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
         p = re.sub(w, broken_w, p)
     # add links:
-    p = re.sub('(?<!")(http[^ ]+)', r'<a href="\1">\1</a>', p)
+    p = re.sub('(?<!")(http[^ ]+)', r'<a href="\1" target="_blank">\1</a>', p)
     # remove line breaks in links:
     while re.findall('href="[^"]+<br/?>', p):
-        p = re.sub('href="([^"]+)<br/?>', r'\1', p)
+        p = re.sub('(href="[^"]+)<br/?>', r'\1', p)
 
     return p
     
@@ -47,7 +47,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             lib = None
             call_no = None
         elif paragraph.style.name.startswith('Heading 2'):
-            lib = paragraph.text.strip()
+            lib = paragraph.text.strip().replace("’", "'")
             d[city][lib] = dict()
         elif paragraph.style.name.startswith('Heading 3'):
             #call_nos.append(paragraph.text)
