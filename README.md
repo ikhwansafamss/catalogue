@@ -5,6 +5,43 @@ Temporary website address: https://pverkind.github.io/IkhwanMss/
 TO DO: 
 * user customization: let user decide which columns are shown in the table? (https://datatables.net/examples/api/show_hide.html)
 * separate landing page?
+* add a "how to cite this website?" section?
+
+# Intro
+
+The website is versioned: the index.html file in the root folder of the repository 
+will redirect to the latest released version (releases are dated: vYYYY-MM-DD, e.g., v2024-05-30).
+
+External users should only use the released version, which is citable and does not change.
+The latest changes (since the latest release) are visible under https://pverkind.github.io/IkhwanMss/work-in-progress.
+
+This website is based on two data sources, both in Google drive: 
+* a spreadsheet containing the main data in the table
+* a word document containing more detailed descriptions of each manuscript
+
+After Gowaart has updated one or both of these files, he can update the website in this way:
+* go to the "Actions" tab in this repo
+* click on "Update website" in the left-hand column
+* click on the "Run workflow" dropdown on the right, and inside the dropdown on the "Run workflow" button.
+
+This will download both the spreadsheet and the word document
+into the `work-in-progress/data` folder
+and rebuild the json file that is the data source for the details in the table.
+
+(the website is also automatically updated whenever something in the repository was changed manually)
+
+These changes will be visible only in the work-in-progress page
+(https://pverkind.github.io/IkhwanMss/work-in-progress). 
+
+If Gowaart feels a new version is ready to release, he can do that 
+by manually generating a new release version of the website: 
+* go to the "Actions" tab in this repo
+* click on "Manual release" in the left-hand column
+* click on the "Run workflow" dropdown on the right, and inside the dropdown on the "Run workflow" button.
+
+This will copy the work-in-progress folder and generate a new folder
+named after today's date. Visitors of https://pverkind.github.io/IkhwanMss 
+will be automatically forwarded to this new release of the website.
 
 # Setup
 
@@ -28,11 +65,25 @@ The content of the root folder of your repo is now served under <your_github_nam
 
 ```
 |- .github/
-|     |- workflows/
-|           |- build_website.yml: script that runs on github server anytime something is changed to the repo;
-|                                 it uses the scripts in the python folder to
-|                                 download the spreadsheet (as .tsv) and Google Doc (as .docx)
-|                                 and rebuild the description json file.
+|     |- workflows/ : contains instructions for GitHub, used to update the website and create releases:
+|           |- automated_release.yml: automatically runs the `python/create_release` script
+|           |                         once every 4 months
+|           |- manual_release.yml: runs the `python/create_release` script
+|           |                      when you click the workflow in the GitHub Actions tab
+|           |- update_website.yml: script that runs on github server anytime something is changed to the repo;
+|                                  it uses the scripts in the `python` folder to
+|                                  download the spreadsheet (as .tsv) and Google Doc (as .docx)
+|                                  and rebuild the description json file.
+|- python/ : 
+|    |- download_data.py: downloads the Google sheet (as .tsv) and Google Doc (as .docx)
+|    |                    into the work-in-progress/data folder
+|    |- parse_doc.py: parses the Google doc and converts it into a json file.
+|    |- create_release.py: script that creates a new release version of the website
+|    |                     (it copies the work-in-progress folder)
+|- md/ : 
+|    |- release-notes.md: a markdown file that lists the releases,
+|    |                    and where you can take notes about what changed between releases.
+|- templates/ : templates for the website's html files.
 |- work-in-progress/ : contains all the data, images and scripts for the website
 |    |- data/ : contains the data from which the website is built
 |    |   |- msData.tsv: downloaded version of the spreadsheet
@@ -42,7 +93,9 @@ The content of the root folder of your repo is now served under <your_github_nam
 |    |- js/ : contains the javascript files that make the website interactive
 |    |- img/ : contains all images needed for the website
 |    |- index.html: main web page
-|- index.html: reroutes the user to the latest release
+|- vYYYY-MM-DD/ : release folder containing all the data, images and scripts 
+|                 for a frozen version of the website
+|- index.html: reroutes the visitor to the latest release
 |- requirements.txt: a list of all Python libraries used by the Python scripts
 |- README.md: this documentation file
 ```
