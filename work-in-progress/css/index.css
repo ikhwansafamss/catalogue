@@ -1,3 +1,12 @@
+a {
+    text-decoration: none;
+    color: red;
+}
+b, strong {
+    color: red;
+    font-weight: normal;
+}
+
 #header {
     text-align: center;
     display: block;
@@ -140,4 +149,43 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
   :root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
     border-top-color: rgba(255, 255, 255, 0.5);
     border-left-color: transparent;
+}
+
+
+#footer {
+    text-align: center;
+    font-family: "Noto Sans Display";
+    margin-top: 20px;
+}
+#footer p {
+    margin: 0;
+}
+
+.triangles:before {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-right: 10px;
+}
+.triangles:after {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-left: 15px;
+}
+.single-triangle:after {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-left: 20px;
+    margin-right: 20px;
 }
