@@ -57,13 +57,13 @@ function format(rowData) {
     for (k in rowData){
         if (rowData[k]){
             hiddenRowHtml += `
-            <dt><b>${k}:</b></dt>
+            <dt><strong>${k}:</strong></dt>
             <dd>${cleanData(rowData[k])}</dd>
             `;
         }
     }
     hiddenRowHtml += `
-            <dt><b>Description:</b></dt>
+            <dt><strong>Description:</strong></dt>
             <dd>${descr}</dd>
             `;
     hiddenRowHtml += '</dl>';
@@ -76,7 +76,7 @@ function format(rowData) {
           ${hiddenRowHtml}
         </td>
         <td class="descr-col">
-          <b>Description</b>: <br/>
+          <strong>Description</strong>: <br/>
           ${descr}
         </td>
       </tr>
