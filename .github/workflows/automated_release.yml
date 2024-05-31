@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # latest commit only
 
       - name: install python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       
@@ -37,7 +37,7 @@ jobs:
           git commit -m "create release" -a
 
       - name: push the changes
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@v0.8.0
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
            branch: main
