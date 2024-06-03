@@ -3,7 +3,17 @@
  ********************/
 
 function preprocessData(data){
-    return data
+    let formattedData = data.map((item) => {
+        let link = item["Digital resource"];
+        if (link) {
+            link = decodeURI(link);
+            link = link.replace(/(?<!")(http[^ ]+)/, '<a href="$1" target="_blank">$1</a>');
+        }
+        item["Digital resource"] = link;
+
+        return item
+    });
+    return formattedData;
 }
 
 function normalizeCallNo(s){
@@ -135,7 +145,7 @@ $.get(tsvPath, function(contents) {
                 };
             }
             // Then, pass the data to the datatable:
-            let data = preprocessData(results.data)
+            let data = preprocessData(results.data);
             table = $('#msTable').DataTable( {
                 data: data,
                 pageLength: 25,  // number of rows displayed by default
