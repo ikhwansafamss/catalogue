@@ -7,7 +7,7 @@ function preprocessData(data){
 }
 
 function normalizeCallNo(s){
-    return s.replace(/[^a-zA-Z0-9]+/g, "");
+    return s.replace(/[^a-zA-Z0-9۰-۹?]+/g, "");
 }
 
 function cleanData(s) {
@@ -31,7 +31,7 @@ function format(rowData) {
     
     // get the description from the descriptions dictionary:
     let city = rowData["City"].trim();
-    let lib = String(rowData["Library"]).trim();
+    let lib = String(rowData["Library"]).trim().replace("’", "'");
     let callNo = normalizeCallNo(String(rowData["(Collection + ) Call Number"]));
     console.log("city:" + city);
     console.log("lib:" + lib);
@@ -112,7 +112,7 @@ $.get(tsvPath, function(contents) {
                     i += 1;
                     let visible = initiallyVisible.includes(key) ? "" : "invisible-col";
                     let classStr = `toggle-vis ${visible}`.trim();
-                    toggleStr += `<a class="${classStr}" data-column="${i}">${columnAliases[key] || key}</a> - `;
+                    toggleStr += `<a class="${classStr}" data-column="${i}">${columnAliases[key] || key}</a><span class="single-triangle"></span>`;
                     columns.push({
                         data: key,
                         title: columnAliases[key] || key,
@@ -134,17 +134,15 @@ $.get(tsvPath, function(contents) {
                 let row = table.row(tr);
             
                 if (row.child.isShown()) {
-                    // This row is already open - close it
                     row.child.hide();
                 }
                 else {
-                    // Open this row
                     row.child(format(row.data())).show();
                 }
             });
 
             // Create the column toggle feature:
-            $('#toggleDiv').html(toggleStr.replace(/ - $/, ""));
+            $('#toggleDiv').html(toggleStr.replace(/<span class="single-triangle"><\/span>$/, ""));
             document.querySelectorAll('a.toggle-vis').forEach((el) => {
                 el.addEventListener('click', function (e) {
                     console.log("clicked");
