@@ -49,6 +49,13 @@ b, strong {
     width: 80%;
 }*/
 
+.toggle-vis {
+    cursor:pointer;
+}
+.invisible-col {
+    color: black;
+}
+
 #tableDiv {
     padding-left: 5%;
     padding-right: 5%;

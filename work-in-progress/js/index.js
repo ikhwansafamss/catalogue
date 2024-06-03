@@ -1,3 +1,7 @@
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
+
 function preprocessData(data){
     return data
 }
@@ -35,24 +39,6 @@ function format(rowData) {
     let descr = descriptions[city][lib][callNo];
     
 
-    /*let hiddenRowHtml = '<div class="columns" dir="auto">';
-    for (k in rowData){
-        if (rowData[k]){
-            hiddenRowHtml += `
-            <div class="entry">
-              <p><strong>${k}:</strong></p>
-              <p>${rowData[k]}</p>
-            </div>
-            `;
-        }
-    }
-    hiddenRowHtml += `
-            <div class="entry">
-              <p><strong>Description:</strong></p>
-              ${descr}
-            </div>
-            `;
-    hiddenRowHtml += '</div>';*/
     let hiddenRowHtml = '<dl class="columns" dir="auto">';
     for (k in rowData){
         if (rowData[k]){
@@ -68,31 +54,35 @@ function format(rowData) {
             `;
     hiddenRowHtml += '</dl>';
 
-    
-    /*hiddenRowHtml = `
-    <table class="hidden-table">
-      <tr>
-        <td class="details-col">
-          ${hiddenRowHtml}
-        </td>
-        <td class="descr-col">
-          <strong>Description</strong>: <br/>
-          ${descr}
-        </td>
-      </tr>
-    </table>
-    `*/
     return hiddenRowHtml;
 }
 
+/***************
+ * BUILD TABLE *
+ ***************/
+
 let table;
 let descriptions;
+let toggleStr = "Toggle columns: ";
 
 let jsonPath = "data/msDescriptions.json";
 $.get(jsonPath, function(contents) {
     descriptions = contents;
 });
 
+// set display names for the tsv columns:
+let columnAliases = {
+    "(Collection + ) Call Number": "Call Number",
+    "Witness to text": "Text"
+};
+let initiallyVisible = [
+    "City", 
+    "Library", 
+    "(Collection + ) Call Number", 
+    "Witness to text",
+    "Date AH",
+    "Date CE",
+];
 
 //let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
 let tsvPath = "data/msData.tsv"
@@ -105,52 +95,40 @@ $.get(tsvPath, function(contents) {
         quoteChar: false,     // consider quote characters " and ' as literal quotes
         skipEmptyLines: true,
         complete: function(results) {
-            console.log(results);
-            // after file is loaded, pass the data to the datatable:
+            // after the tsv file is loaded, extract the column headers
+            // and create the column toggle:
+            let columns = [
+                {
+                    // first column: icon for showing collapsed detailed data
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: ''
+                },
+            ]
+            let i = 0;
+            for (key in results.data[0]){
+                if (key){
+                    i += 1;
+                    let visible = initiallyVisible.includes(key) ? "" : "invisible-col";
+                    let classStr = `toggle-vis ${visible}`.trim();
+                    toggleStr += `<a class="${classStr}" data-column="${i}">${columnAliases[key] || key}</a> - `;
+                    columns.push({
+                        data: key,
+                        title: columnAliases[key] || key,
+                        visible: initiallyVisible.includes(key)
+                    });
+                };
+            }
+            // Then, pass the data to the datatable:
             let data = preprocessData(results.data)
             table = $('#msTable').DataTable( {
                 data: data,
                 pageLength: 25,  // number of rows displayed by default
-                columns: [  // define the columns that should be displayed
-                    {
-                        // first column: icon for showing collapsed detailed data
-                        className: 'dt-control',
-                        orderable: false,
-                        data: null,
-                        defaultContent: ''
-                    },
-                    { 
-                        data: 'City',   // use this column in the TSV data
-                        title: 'City'   // use this as the header for the datatable column
-                    },
-                    { 
-                        data: 'Library',   // use this column in the TSV data
-                        title: 'Library'   // use this as the header for the datatable column
-                    },
-                    { 
-                        data: '(Collection + ) Call Number', 
-                        title: 'Call number' 
-                    },
-                    { 
-                        data: 'Date AH', 
-                        title: 'Date (AH)' 
-                    },
-                    { 
-                        data: 'Date CE', 
-                        title: 'Date (CE)'
-                    }, 
-                    { 
-                        data: 'Witness to text', 
-                        title: 'Text'
-                    },
-                    // add columns that should be searchable but not shown:
-                    {
-                        data: 'Specific contents',
-                        visible: false
-                    },
-                ]
+                lengthMenu: [10, 25, 50, { label: 'All', value: -1 }],
+                columns: columns
             });
-            // Add event listener for opening and closing details
+            // Add event listener for opening and closing details: 
             table.on('click', 'td.dt-control', function (e) {
                 let tr = e.target.closest('tr');
                 let row = table.row(tr);
@@ -163,6 +141,27 @@ $.get(tsvPath, function(contents) {
                     // Open this row
                     row.child(format(row.data())).show();
                 }
+            });
+
+            // Create the column toggle feature:
+            $('#toggleDiv').html(toggleStr.replace(/ - $/, ""));
+            document.querySelectorAll('a.toggle-vis').forEach((el) => {
+                el.addEventListener('click', function (e) {
+                    console.log("clicked");
+                    e.preventDefault();
+            
+                    let columnIdx = e.target.getAttribute('data-column');
+                    let column = table.column(columnIdx);
+
+                    console.log("Clicked: column no. "+columnIdx);
+            
+                    // Toggle the visibility of the column in the table:
+                    column.visible(!column.visible());
+
+                    // Toggle the color of the column name in the toggle list:
+                    el.classList.toggle("invisible-col");
+                    
+                });
             });
         }
     });
