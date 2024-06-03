@@ -39,7 +39,8 @@ function format(rowData) {
     let descr = descriptions[city][lib][callNo];
     
 
-    let hiddenRowHtml = '<dl class="columns" dir="auto">';
+    /*let hiddenRowHtml = '<dl class="columns" dir="auto">';*/
+    let hiddenRowHtml = '<dl dir="auto">';
     for (k in rowData){
         if (rowData[k]){
             hiddenRowHtml += `
@@ -48,11 +49,24 @@ function format(rowData) {
             `;
         }
     }
-    hiddenRowHtml += `
+    /*hiddenRowHtml += `
             <dt><strong>Description:</strong></dt>
             <dd>${descr}</dd>
-            `;
+            `;*/
     hiddenRowHtml += '</dl>';
+    hiddenRowHtml = `
+        <div class="details">
+          <div class="column" class="left-col">
+            ${hiddenRowHtml}
+          </div>
+          <div class="column" class="right-col">
+            <dl dir="auto">
+              <dt><strong>Description:</strong></dt>
+              <dd>${descr}</dd>
+            </dl>
+          </div>
+        </div>`
+
 
     return hiddenRowHtml;
 }
