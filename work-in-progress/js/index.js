@@ -7,7 +7,7 @@ function preprocessData(data){
         let link = item["Digital resource"];
         if (link) {
             link = decodeURI(link);
-            link = link.replace(/(?<!")(http[^ ]+)/, '<a href="$1" target="_blank">$1</a>');
+            link = link.replace(/(http[^ ]+)/, '<a href="$1" target="_blank">$1</a>');
         }
         item["Digital resource"] = link;
 
@@ -23,7 +23,7 @@ function normalizeCallNo(s){
 function cleanData(s) {
     if (typeof s === 'string' || s instanceof String) {
         // add link to URLs:
-        s = s.replace(/(http[^ ]+)/g, '<a href="$1" target="_blank">$1</a>');
+        s = s.replace(/([^">])(http[^ ]+)/g, '$1<a href="$2" target="_blank">$2</a>');
         // remove line breaks from links: 
         s = s.replace(/(href="[^"]+)<br\/?>/g, '$1');
         s = s.replace(/(href="[^"]+)<br\/?>/g, '$1');
@@ -107,6 +107,7 @@ let initiallyVisible = [
     "Date AH",
     "Date CE",
 ];
+let numericColumns = ["Date AH", "Date CE"]
 
 //let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
 let tsvPath = "data/msData.tsv"
@@ -140,7 +141,8 @@ $.get(tsvPath, function(contents) {
                     columns.push({
                         data: key,
                         title: columnAliases[key] || key,
-                        visible: initiallyVisible.includes(key)
+                        visible: initiallyVisible.includes(key),
+                        type: numericColumns.includes(key) ? "num" : "string"
                     });
                 };
             }
