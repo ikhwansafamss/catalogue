@@ -107,8 +107,6 @@ let initiallyVisible = [
     "Date AH",
     "Date CE",
 ];
-let numericColumns = ["Date AH", "Date CE"]
-
 //let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
 let tsvPath = "data/msData.tsv"
 $.get(tsvPath, function(contents) {
@@ -116,7 +114,7 @@ $.get(tsvPath, function(contents) {
     Papa.parse(contents,  {
         header: true,         // each row will become a dictionary
         delimiter: '\t',
-        dynamicTyping: true,  // interpret numbers as integers, strings as strings etc.
+        dynamicTyping: false,  // interpret numbers as integers, strings as strings etc.
         quoteChar: false,     // consider quote characters " and ' as literal quotes
         skipEmptyLines: true,
         complete: function(results) {
@@ -142,7 +140,7 @@ $.get(tsvPath, function(contents) {
                         data: key,
                         title: columnAliases[key] || key,
                         visible: initiallyVisible.includes(key),
-                        type: numericColumns.includes(key) ? "num" : "string"
+                        type: "natural-ci"  // adapted version of https://datatables.net/plug-ins/sorting/natural
                     });
                 };
             }
