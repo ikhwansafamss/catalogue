@@ -11,6 +11,13 @@ function preprocessData(data){
         }
         item["Digital resource"] = link;
 
+        link = item["Catalogue reference"];
+        if (link) {
+            link = decodeURI(link);
+            link = link.replace(/(http[^ ]+)/, '<a href="$1" target="_blank">$1</a>');
+        }
+        item["Catalogue reference"] = link;
+
         return item
     });
     return formattedData;
