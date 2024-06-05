@@ -30,9 +30,9 @@ def extract_text(p):
                 el_type = "other"
         
         if el_type == "run" and el.bold:
-            text += re.sub(r"(^\s*)(.+?)(\s*$)", r"\1<b>\2</b>\3", el.text)
+            text += re.sub(r"(^\s*)(.+?)(\s*$)", r"\1<strong>\2</strong>\3", el.text)
         elif el_type == "run" and el.italic:
-            text += re.sub(r"(^\s*)(.+?)(\s*$)", r"\1<i>\2</i>\3", el.text)
+            text += re.sub(r"(^\s*)(.+?)(\s*$)", r'\1<span class="italics">\2</span>\3', el.text)
         elif el_type == "hyperlink" and el.url:
             #link_text = el.text
             #if len(link_text) > 60:
@@ -57,8 +57,8 @@ def clean_paragraph(p):
     # remove double spaces:
     p = re.sub("  +", " ", p)
     # remove bold/italic tags that surround every word separately:
-    p = re.sub("</i>([^\w\n]+)<i>", r"\1", p)
-    p = re.sub("</b>([^\w\n]+)<b>", r"\1", p)
+    p = re.sub('</span>([^\w\n]+)<span class="italics">', r"\1", p)
+    p = re.sub("</strong>([^\w\n]+)<strong>", r"\1", p)
 
     # # break long URLs:  # not necessary anymore
     # long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]

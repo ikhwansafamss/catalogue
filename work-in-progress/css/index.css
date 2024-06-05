@@ -6,6 +6,9 @@ b, strong {
     color: #cf705eff;
     font-weight: normal;
 }
+.italics {
+    font-style: italic;
+}
 
 /*Add paper-style background: https://stackoverflow.com/a/63615485*/
 body {
