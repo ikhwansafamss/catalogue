@@ -13,23 +13,64 @@ import textwrap
 def normalize_call_no(s):
     return re.sub("[^a-zA-Z0-9۰-۹?]+", "", s)
 
+def extract_text(p):
+    """Convert a docx Paragraph object"""
+    text = ""
+    for el in p.iter_inner_content():
+        # determine the type of the paragraph element:
+        try:
+            el.bold
+            el_type = "run"
+        except:
+            try:
+                el.url
+                el_type = "hyperlink"
+            except:
+                print(el)
+                el_type = "other"
+        
+        if el_type == "run" and el.bold:
+            text += re.sub(r"(^\s*)(.+?)(\s*$)", r"\1<b>\2</b>\3", el.text)
+        elif el_type == "run" and el.italic:
+            text += re.sub(r"(^\s*)(.+?)(\s*$)", r"\1<i>\2</i>\3", el.text)
+        elif el_type == "hyperlink" and el.url:
+            #link_text = el.text
+            #if len(link_text) > 60:
+            #    link_text = "<br>".join(textwrap.wrap(link_text, 72, break_on_hyphens=False))
+            #link = f'<a href="{el.url}" target="_blank">{link_text}</a>'
+            link = f'<a href="{el.url}" target="_blank">{el.text}</a>'
+            # move spaces outside the <a> tag:
+            if "> " in link:
+                link = " " + link.replace("> ", ">")
+            if " <" in link:
+                link = link.replace(" <", "<") + " "
+            # decode URLs that contain Arabic script:
+            if "%D8" in link or "%B" in link:
+                link = urllib.parse.unquote(link)
+            text += link
+        else:
+            text += el.text
+
+    return text.strip()
+
 def clean_paragraph(p):
     # remove double spaces:
     p = re.sub("  +", " ", p)
-    # decode URLs that contain Arabic script:
-    if "%D8" in p or "%B" in p:
-        p = urllib.parse.unquote(p)
-    # break long URLs:
-    long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]
-    for w in long_words:
-        w = w.strip("().")
-        broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
-        p = re.sub(w, broken_w, p)
-    # add links:
-    p = re.sub('(?<!")(http[^ ]+)', r'<a href="\1" target="_blank">\1</a>', p)
-    # remove line breaks in links:
-    while re.findall('href="[^"]+<br/?>', p):
-        p = re.sub('(href="[^"]+)<br/?>', r'\1', p)
+    # remove bold/italic tags that surround every word separately:
+    p = re.sub("</i>([^\w\n]+)<i>", r"\1", p)
+    p = re.sub("</b>([^\w\n]+)<b>", r"\1", p)
+
+    # # break long URLs:  # not necessary anymore
+    # long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]
+    # for w in long_words:
+    #     w = w.strip("().")
+    #     broken_w = "<br>".join(textwrap.wrap(p, 60, break_on_hyphens=False))
+    #     p = re.sub(w, broken_w, p)
+    # # add links:
+    # p = re.sub('(?<!")(http[^ ]+)', r'<a href="\1" target="_blank">\1</a>', p)
+    # # remove line breaks in links:
+    # while re.findall('href="[^"]+<br/?>', p):
+    #     p = re.sub('(href="[^"]+)<br/?>', r'\1', p)
 
     return p
     
@@ -55,7 +96,8 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             call_no = normalize_call_no(paragraph.text)
             d[city][lib][call_no] = ""
         else:
-            text = clean_paragraph(paragraph.text.strip())
+            text = extract_text(paragraph)
+            text = clean_paragraph(text)
             if text:
                 try:
                     d[city][lib][call_no] += '<p dir="auto">' + text + '</p>'
@@ -71,18 +113,28 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
     normalized_call_nos = {normalize_call_no(call_no): call_no for call_no in call_nos}
     with open(sheet_fp, mode="r", encoding="utf-8") as file:
         reader = csv.DictReader(file, delimiter="\t")
-        print("call numbers not found in the word document:")
+        
+        not_found = []
         for row in reader:
             call_no = normalize_call_no(str(row["Library"])+ " " + str(row["(Collection + ) Call Number"]))
             if call_no not in normalized_call_nos:
-                print("*", [row["City"], row["Library"], row["(Collection + ) Call Number"].strip()])
+                not_found.append(f'* {row["City"]} {row["Library"]} {row["(Collection + ) Call Number"]}'.strip())
             else:
                 #call_nos = [el for el in call_nos if el != call_no]
                 del normalized_call_nos[call_no]
+        if not_found: 
+            print("call numbers not found in the Word document:")
+            for n in not_found:
+                print(n)
+        else: 
+            print("All call numbers from the spreadsheet were found in the Word document.")
         print("----")
-        print("call numbers not found in the spreadsheet:")
-        for call_no in normalized_call_nos:
-            print("*", normalized_call_nos[call_no])
+        if normalized_call_nos:
+            print("call numbers not found in the spreadsheet:")
+            for call_no in normalized_call_nos:
+                print("*", normalized_call_nos[call_no])
+        else:
+            print("All call numbers from the Word document were found in the spreadsheet.")
 
 
 doc_fp = "./work-in-progress/data/msDescriptions.docx"
