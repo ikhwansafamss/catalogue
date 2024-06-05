@@ -11,10 +11,11 @@ import urllib.parse
 import textwrap
 
 def normalize_call_no(s):
+    """Remove all non-necessary characters from the call number (to make matching easier)"""
     return re.sub("[^a-zA-Z0-9۰-۹?]+", "", s)
 
 def extract_text(p):
-    """Convert a docx Paragraph object"""
+    """Extract and style a docx Paragraph object"""
     text = ""
     for el in p.iter_inner_content():
         # determine the type of the paragraph element:
@@ -35,6 +36,7 @@ def extract_text(p):
             text += re.sub(r"(^\s*)(.+?)(\s*$)", r'\1<span class="italics">\2</span>\3', el.text)
         elif el_type == "hyperlink" and el.url:
             #link_text = el.text
+            # break long links (not necessary anymore):
             #if len(link_text) > 60:
             #    link_text = "<br>".join(textwrap.wrap(link_text, 72, break_on_hyphens=False))
             #link = f'<a href="{el.url}" target="_blank">{link_text}</a>'
@@ -54,6 +56,7 @@ def extract_text(p):
     return text.strip()
 
 def clean_paragraph(p):
+    """Clean a paragraph string"""
     # remove double spaces:
     p = re.sub("  +", " ", p)
     # remove bold/italic tags that surround every word separately:
@@ -76,12 +79,17 @@ def clean_paragraph(p):
     
 
 def parse_doc(doc_fp, sheet_fp, json_fp):
+    """Parse a Word document. 
     
+    Args:
+        doc_fp (str): path to the input document
+        sheet_fp (str): path to the spreadsheet (to check for missing call numbers)
+        json_fp (str): path to the output json file
+    """
     d = dict()
     call_nos = []
     document = Document(doc_fp)
     for i, paragraph in enumerate(document.paragraphs):
-        #print(i, [paragraph.text[:50]], paragraph.style.name)
         if paragraph.style.name.startswith('Heading 1'):
             city = paragraph.text.strip()
             d[city] = dict()
@@ -91,7 +99,6 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             lib = paragraph.text.strip().replace("’", "'")
             d[city][lib] = dict()
         elif paragraph.style.name.startswith('Heading 3'):
-            #call_nos.append(paragraph.text)
             call_nos.append(lib + " " + paragraph.text)
             call_no = normalize_call_no(paragraph.text)
             d[city][lib][call_no] = ""
@@ -109,7 +116,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
     with open(json_fp, mode="w", encoding="utf-8") as file:
         json.dump(d, file, indent=2, ensure_ascii=False)
 
-    # check if there are manuscripts in the tsv file that are not in the json:
+    # check if there are manuscripts in the tsv file that are not in the json and vice versa:
     normalized_call_nos = {normalize_call_no(call_no): call_no for call_no in call_nos}
     with open(sheet_fp, mode="r", encoding="utf-8") as file:
         reader = csv.DictReader(file, delimiter="\t")
@@ -128,7 +135,9 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
                 print(n)
         else: 
             print("All call numbers from the spreadsheet were found in the Word document.")
+            
         print("----")
+
         if normalized_call_nos:
             print("call numbers not found in the spreadsheet:")
             for call_no in normalized_call_nos:
