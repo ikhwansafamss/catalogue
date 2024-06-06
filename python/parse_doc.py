@@ -99,7 +99,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             lib = paragraph.text.strip().replace("’", "'")
             d[city][lib] = dict()
         elif paragraph.style.name.startswith('Heading 3'):
-            call_nos.append(lib + " " + paragraph.text)
+            call_nos.append(city + " " + lib + " " + paragraph.text)
             call_no = normalize_call_no(paragraph.text)
             d[city][lib][call_no] = ""
         else:
@@ -123,7 +123,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         
         not_found = []
         for row in reader:
-            call_no = normalize_call_no(str(row["Library"])+ " " + str(row["(Collection + ) Call Number"]))
+            call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
             if call_no not in normalized_call_nos:
                 not_found.append(f'* {row["City"]} {row["Library"]} {row["(Collection + ) Call Number"]}'.strip())
             else:
@@ -135,7 +135,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
                 print(n)
         else: 
             print("All call numbers from the spreadsheet were found in the Word document.")
-            
+
         print("----")
 
         if normalized_call_nos:
