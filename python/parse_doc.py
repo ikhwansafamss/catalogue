@@ -60,8 +60,8 @@ def clean_paragraph(p):
     # remove double spaces:
     p = re.sub("  +", " ", p)
     # remove bold/italic tags that surround every word separately:
-    p = re.sub('</span>([^\w\n]+)<span class="italics">', r"\1", p)
-    p = re.sub("</strong>([^\w\n]+)<strong>", r"\1", p)
+    p = re.sub(r'</span>([^\w\n]+)<span class="italics">', r"\1", p)
+    p = re.sub(r'</strong>([^\w\n]+)<strong>', r"\1", p)
 
     # # break long URLs:  # not necessary anymore
     # long_words = [w for w in re.findall("[^ ]+", p) if len(w) > 60]
