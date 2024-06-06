@@ -48,7 +48,7 @@ function format(rowData) {
     
     // get the description from the descriptions dictionary:
     let city = rowData["City"].trim();
-    let lib = String(rowData["Library"]).trim().replace("’", "'");
+    let lib = String(rowData["Library"]).trim().replace(/’/g, "'");
     let callNo = normalizeCallNo(String(rowData["(Collection + ) Call Number"]));
     console.log("city:" + city);
     console.log("lib:" + lib);
@@ -151,6 +151,19 @@ $.get(tsvPath, function(contents) {
                     });
                 };
             }
+            // add a column with the description, to make the description searchable:
+            let descrCol = {
+                render: (data, type, row) => {
+                    let city = row["City"].trim();
+                    let lib = String(row["Library"]).trim().replace(/’/g, "'");
+                    let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
+                    return descriptions[city][lib][callNo];
+                },
+                visible: false, 
+                title: "Description"
+            };
+            columns.push(descrCol);
+            toggleStr += `<a class="toggle-vis invisible-col" data-column="${i+1}">Description</a><span class="single-triangle"></span>`;
             // Then, pass the data to the datatable:
             let data = preprocessData(results.data);
             table = $('#msTable').DataTable( {
