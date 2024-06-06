@@ -66,8 +66,6 @@ The content of the root folder of your repo is now served under <your_github_nam
 ```
 |- .github/
 |     |- workflows/ : contains instructions for GitHub, used to update the website and create releases:
-|           |- automated_release.yml: automatically runs the `python/create_release` script
-|           |                         once every 4 months
 |           |- manual_release.yml: runs the `python/create_release` script
 |           |                      when you click the workflow in the GitHub Actions tab
 |           |- update_website.yml: script that runs on github server anytime something is changed to the repo;
