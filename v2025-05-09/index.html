@@ -13,16 +13,17 @@
     <!--
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     -->
     <script src="js/jquery.min.js"></script>
     <script src="js/dataTables.js"></script>
+    <script src="js/natural.js"></script>
     <script src="js/papaparse.min.js"></script>
     <!--Noto font: -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!--INSERT_PAGE_SPECIFIC_CSS_HERE-->
 </head>
 <body dir="auto">
     <div id="header">
@@ -39,22 +40,38 @@
         -->
         <img class="colophon" src="img/colophon3_thuluth_paths.svg"/>
     </div>
-    <div id="pageContent">
-      <h1>Revision and update notes</h1>
-<p>This website is updated and released periodically. </p>
-<p>The current release is <strong><a href="https://pverkind.github.io/IkhwanMss/v2024-05-30">v2024-05-30</a></strong></p>
-<p>Please always cite the website including its release number 
-(<a href="https://pverkind.github.io/IkhwanMss">https://pverkind.github.io/IkhwanMss</a> 
-will always redirect to the latest release).
-Released versions of the website are stable and will remain available.</p>
-<h2>Release list:</h2>
-<!-- INSERT NEWER VERSION BELOW THIS -->
-<ul>
-<li><a href="https://pverkind.github.io/IkhwanMss/v2025-05-09">v2025-05-09</a></li>
-<li><a href="https://pverkind.github.io/IkhwanMss/v2024-05-30">v2024-05-30</a></li>
-<li><a href="https://pverkind.github.io/IkhwanMss/v2024-05-29">v2024-05-29</a></li>
-</ul>
+    <div id="tableDiv">
+      <table id="msTable" class="cell-border"></table>  <!--display cell borders-->
+      <div id="toggleDiv"></div>
     </div>
+    <div id="footer">
+      <p class="triangles">
+        The layout of this website is based on 
+        <a target="_blank" href="https://digital.bodleian.ox.ac.uk/objects/12fcf5c5-2bb0-4e0e-b8a9-7620bd6bec90/surfaces/d503afb6-1cd0-4e25-b5db-604481968a13/">Bodleian MS. Laud Or. 260</a>
+      </p>
+      <p class="triangles">
+        Data collected by Gowaart Van Den Bossche
+      </p>
+      <p class="triangles">
+        Website by Peter Verkinderen
+      </p>
+      <p class="triangles">
+        View the data on <a href="https://github.com/pverkind/IkhwanMss/tree/main/v2025-05-09/data" target="_blank">GitHub</a>
+      </p>
+      <p class="triangles">
+        Version history <a href="release-notes.html">here.</a>
+      </p>
+      <p>
+        <span class="single-triangle"></span>
+        <span class="single-triangle"></span>
+        <span class="single-triangle"></span>
+      </p>
+      <p>
+        <span class="single-triangle"></span>
+      </p>
+    </div>
+    
+    <script src="js/index.js"></script>
     
 </body>
 </html>
