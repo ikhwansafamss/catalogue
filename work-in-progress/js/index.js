@@ -99,34 +99,32 @@ let toggleStr = "Toggle columns: ";
 let jsonPath = "data/msDescriptions.json";
 $.get(jsonPath, function(contents) {
     descriptions = contents;
-});
 
-// set display names for the tsv columns:
-let columnAliases = {
-    "(Collection + ) Call Number": "Call Number",
-    "Witness to text": "Text"
-};
-let initiallyVisible = [
-    "City", 
-    "Library", 
-    "(Collection + ) Call Number", 
-    "Witness to text",
-    "Date AH",
-    "Date CE",
-];
-//let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
-let tsvPath = "data/msData.tsv"
-$.get(tsvPath, function(contents) {
-    // pass contents of file to Papa.parse to parse the tsv into a list of dictionaries:
-    Papa.parse(contents,  {
-    
-        header: true,         // each row will become a dictionary
-        delimiter: '\t',
-        dynamicTyping: false,  // interpret numbers as integers, strings as strings etc.
-        quoteChar: false,     // consider quote characters " and ' as literal quotes
-        skipEmptyLines: true,
-        complete: function(results) {
-            setTimeout(() => { // wait 50 ms before loading the datatable
+    // set display names for the tsv columns:
+    let columnAliases = {
+        "(Collection + ) Call Number": "Call Number",
+        "Witness to text": "Text"
+    };
+    let initiallyVisible = [
+        "City", 
+        "Library", 
+        "(Collection + ) Call Number", 
+        "Witness to text",
+        "Date AH",
+        "Date CE",
+    ];
+    //let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
+    let tsvPath = "data/msData.tsv"
+    $.get(tsvPath, function(contents) {
+        // pass contents of file to Papa.parse to parse the tsv into a list of dictionaries:
+        Papa.parse(contents,  {
+        
+            header: true,         // each row will become a dictionary
+            delimiter: '\t',
+            dynamicTyping: false,  // interpret numbers as integers, strings as strings etc.
+            quoteChar: false,     // consider quote characters " and ' as literal quotes
+            skipEmptyLines: true,
+            complete: function(results) {
                 // after the tsv file is loaded, extract the column headers
                 // and create the column toggle:
 
@@ -215,8 +213,8 @@ $.get(tsvPath, function(contents) {
                         
                     });
                 });
-            }, 50);    
-        }
+            }
+        });
     });
 });
 
