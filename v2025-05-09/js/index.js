@@ -125,86 +125,88 @@ $.get(tsvPath, function(contents) {
         quoteChar: false,     // consider quote characters " and ' as literal quotes
         skipEmptyLines: true,
         complete: function(results) {
-            // after the tsv file is loaded, extract the column headers
-            // and create the column toggle:
-            let columns = [
-                {
-                    // first column: icon for showing collapsed detailed data
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: ''
-                },
-            ]
-            let i = 0;
-            for (key in results.data[0]){
-                if (key){
-                    i += 1;
-                    let visible = initiallyVisible.includes(key) ? "" : "invisible-col";
-                    let classStr = `toggle-vis ${visible}`.trim();
-                    toggleStr += `<a class="${classStr}" data-column="${i}">${columnAliases[key] || key}</a><span class="single-triangle"></span>`;
-                    columns.push({
-                        data: key,
-                        title: columnAliases[key] || key,
-                        visible: initiallyVisible.includes(key),
-                        type: "natural-ci"  // adapted version of https://datatables.net/plug-ins/sorting/natural
-                    });
+            setTimeout(() => { // wait 50 ms before loading the datatable
+                // after the tsv file is loaded, extract the column headers
+                // and create the column toggle:
+                let columns = [
+                    {
+                        // first column: icon for showing collapsed detailed data
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: ''
+                    },
+                ]
+                let i = 0;
+                for (key in results.data[0]){
+                    if (key){
+                        i += 1;
+                        let visible = initiallyVisible.includes(key) ? "" : "invisible-col";
+                        let classStr = `toggle-vis ${visible}`.trim();
+                        toggleStr += `<a class="${classStr}" data-column="${i}">${columnAliases[key] || key}</a><span class="single-triangle"></span>`;
+                        columns.push({
+                            data: key,
+                            title: columnAliases[key] || key,
+                            visible: initiallyVisible.includes(key),
+                            type: "natural-ci"  // adapted version of https://datatables.net/plug-ins/sorting/natural
+                        });
+                    };
+                }
+                // add a column with the description, to make the description searchable:
+                let descrCol = {
+                    render: (data, type, row) => {
+                        let city = row["City"].trim();
+                        let lib = String(row["Library"]).trim().replace(/’/g, "'");
+                        let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
+                        return descriptions[city][lib][callNo];
+                    },
+                    visible: false, 
+                    title: "Description"
                 };
-            }
-            // add a column with the description, to make the description searchable:
-            let descrCol = {
-                render: (data, type, row) => {
-                    let city = row["City"].trim();
-                    let lib = String(row["Library"]).trim().replace(/’/g, "'");
-                    let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
-                    return descriptions[city][lib][callNo];
-                },
-                visible: false, 
-                title: "Description"
-            };
-            columns.push(descrCol);
-            toggleStr += `<a class="toggle-vis invisible-col" data-column="${i+1}">Description</a><span class="single-triangle"></span>`;
-            // Then, pass the data to the datatable:
-            let data = preprocessData(results.data);
-            table = $('#msTable').DataTable( {
-                data: data,
-                pageLength: 25,  // number of rows displayed by default
-                lengthMenu: [10, 25, 50, { label: 'All', value: -1 }],
-                columns: columns
-            });
-            // Add event listener for opening and closing details: 
-            table.on('click', 'td.dt-control', function (e) {
-                let tr = e.target.closest('tr');
-                let row = table.row(tr);
-            
-                if (row.child.isShown()) {
-                    row.child.hide();
-                }
-                else {
-                    row.child(format(row.data())).show();
-                }
-            });
-
-            // Create the column toggle feature:
-            $('#toggleDiv').html(toggleStr.replace(/<span class="single-triangle"><\/span>$/, ""));
-            document.querySelectorAll('a.toggle-vis').forEach((el) => {
-                el.addEventListener('click', function (e) {
-                    console.log("clicked");
-                    e.preventDefault();
-            
-                    let columnIdx = e.target.getAttribute('data-column');
-                    let column = table.column(columnIdx);
-
-                    console.log("Clicked: column no. "+columnIdx);
-            
-                    // Toggle the visibility of the column in the table:
-                    column.visible(!column.visible());
-
-                    // Toggle the color of the column name in the toggle list:
-                    el.classList.toggle("invisible-col");
-                    
+                columns.push(descrCol);
+                toggleStr += `<a class="toggle-vis invisible-col" data-column="${i+1}">Description</a><span class="single-triangle"></span>`;
+                // Then, pass the data to the datatable:
+                let data = preprocessData(results.data);
+                table = $('#msTable').DataTable( {
+                    data: data,
+                    pageLength: 25,  // number of rows displayed by default
+                    lengthMenu: [10, 25, 50, { label: 'All', value: -1 }],
+                    columns: columns
                 });
-            });
+                // Add event listener for opening and closing details: 
+                table.on('click', 'td.dt-control', function (e) {
+                    let tr = e.target.closest('tr');
+                    let row = table.row(tr);
+                
+                    if (row.child.isShown()) {
+                        row.child.hide();
+                    }
+                    else {
+                        row.child(format(row.data())).show();
+                    }
+                });
+
+                // Create the column toggle feature:
+                $('#toggleDiv').html(toggleStr.replace(/<span class="single-triangle"><\/span>$/, ""));
+                document.querySelectorAll('a.toggle-vis').forEach((el) => {
+                    el.addEventListener('click', function (e) {
+                        console.log("clicked");
+                        e.preventDefault();
+                
+                        let columnIdx = e.target.getAttribute('data-column');
+                        let column = table.column(columnIdx);
+
+                        console.log("Clicked: column no. "+columnIdx);
+                
+                        // Toggle the visibility of the column in the table:
+                        column.visible(!column.visible());
+
+                        // Toggle the color of the column name in the toggle list:
+                        el.classList.toggle("invisible-col");
+                        
+                    });
+                });
+            }, 50);    
         }
     });
 });
