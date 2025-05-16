@@ -122,8 +122,14 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         reader = csv.DictReader(file, delimiter="\t")
         
         not_found = []
-        for row in reader:
-            call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
+        for i, row in enumerate(reader):
+            try:
+                print(row["City"], row["(Collection + ) Call Number"] )
+                call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
+            except Exception as e:
+                print("Error normalizing call no:", e)
+                call_no = None
+                continue
             if call_no not in normalized_call_nos:
                 not_found.append(f'* {row["City"]} {row["Library"]} {row["(Collection + ) Call Number"]}'.strip())
             else:
