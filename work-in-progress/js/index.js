@@ -151,9 +151,9 @@ $.get(jsonPath, function(contents) {
                             data: key,
                             title: columnAliases[key] || key,
                             visible: initiallyVisible.includes(key),
-                            orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,
+                            /*orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,*/
                             type: "natural-ci",  // adapted version of https://datatables.net/plug-ins/sorting/natural
-                            "render": function (data, type, row, meta) {
+                            render: function (data, type, row, meta) {
                                 return '<div class="tablecell-content">' + data + '</div>';
                             }
                         });
