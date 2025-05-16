@@ -126,7 +126,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         for i, row in enumerate(reader):
             try:
                 call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
-            except Error as e:
+            except Exception as e:
                 print("Error normalizing call no:", e)
                 print("previous row:", prev_row["City"], prev_row["Library"], prev_row["(Collection + ) Call Number"] )
             if call_no not in normalized_call_nos:
