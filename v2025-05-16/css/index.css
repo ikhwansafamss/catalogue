@@ -1,0 +1,258 @@
+a {
+    text-decoration: none;
+    color: #cf705eff;
+}
+b, strong {
+    color: #cf705eff;
+    font-weight: normal;
+}
+.italics {
+    font-style: italic;
+}
+
+/*Add paper-style background: https://stackoverflow.com/a/63615485*/
+body {
+    margin: 0; /* box shadow seems to add a margin by default*/
+    padding: 100px 0;
+    box-shadow: 0 0 150px #f4d6ae inset; /*#8f5922*/
+    background: #fdfdfd;  /*#fffef0*/
+    /* Add noise for a vellum paper effect: */
+    background-image: url(data:image/png;base64,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);
+}
+
+#header {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;    
+}
+
+#aboutDiv {
+    text-align: center;
+    display: none;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    font-family: "Noto Sans Display";
+}
+
+#title-wrapper {
+    position: relative;
+}
+
+.header-title {
+    border: 1px solid #cf705eff;
+    border-radius: 75px;
+    /*padding: 20px;*/
+}
+
+.title-foreground {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #535C95;
+}
+.title-background {
+    color: #cf705eff;
+}
+
+/*.triangle {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 1px;
+}*/
+/*
+.colophon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 80%;
+}*/
+
+.toggle-vis {
+    cursor:pointer;
+}
+.invisible-col {
+    color: black;
+}
+
+#tableDiv {
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 20px;
+    font-family: "Noto Sans Display";
+}
+
+.dt-column-title {
+    color: #cf705eff;
+}
+
+/* Red colours for the table borders:*/
+
+table {
+    border: 3px double #cf705eff;
+    border-radius: 1px;
+}
+
+th {
+    border-left: 1px solid #cf705eff;
+}
+
+td {
+    border: 1px solid #cf705eff;
+}
+
+/* Remove grey "shadow" from table cell borders: */
+table.dataTable.cell-border > tbody > tr > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+    border-right: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > tbody > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > thead > tr > *:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.0);
+}
+table.dataTable.cell-border > tbody > tr:first-child > * {
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+}
+
+
+/* make sure that the details are in two columns: */
+.columns {
+    column-count: 2;
+}
+.columns p {
+    margin: 3px;
+    overflow-wrap: break-word;
+}
+.columns dd {
+    overflow-wrap: anywhere;
+}
+
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  /* Clear floats after the columns */
+  .details:after {
+    box-sizing: border-box;
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+.column p {
+    margin: 3px;
+    overflow-wrap: break-word;
+}
+.column dd {
+    overflow-wrap: anywhere;
+}
+  
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+  }
+
+/*Override the default dropdown icon*/
+table.dataTable td.dt-control {
+    text-align: center;
+    cursor: pointer;
+    font-size: 30px;
+    color: #cf705eff;
+  }
+table.dataTable td.dt-control:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "؞";
+    transform: rotate(90deg);
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 0px solid transparent;
+    /*ORIGINAL (triangle):*/
+    /*content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid transparent;
+    border-right: 0px solid transparent;*/
+}
+table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 0px solid transparent;
+    content: "؞";
+    transform: rotate(180deg);
+    /*ORIGINAL (triangle):*/
+    /*border-top: 10px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 5px solid transparent;*/
+}
+  
+html.dark table.dataTable td.dt-control:before,
+  :root[data-bs-theme=dark] table.dataTable td.dt-control:before {
+    border-left-color: rgba(255, 255, 255, 0.5);
+}
+html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
+  :root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: transparent;
+}
+
+/*https://datatables.net/forums/discussion/79277/maximum-column-width-for-all-columns*/
+.tablecell-content {
+    max-width: 400px; /* Set your desired max width */
+    word-wrap: break-word; /* Allow text to wrap to new lines */
+    white-space: normal; /* Ensure text wraps */
+}
+
+#footer {
+    text-align: center;
+    font-family: "Noto Sans Display";
+    margin-top: 20px;
+}
+#footer p {
+    margin: 0;
+}
+
+.triangles:before {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-right: 10px;
+}
+.triangles:after {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-left: 15px;
+}
+.single-triangle:after {
+    content: "؞";
+    font-size: 25px;
+    color: red;
+    display: inline-block;
+    box-sizing: border-box;
+    transform: rotate(60deg);
+    margin-left: 20px;
+    margin-right: 20px;
+}
