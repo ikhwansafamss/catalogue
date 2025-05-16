@@ -108,9 +108,6 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             if text:
                 try:
                     d[city][lib][call_no] += '<p dir="auto">' + text + '</p>'
-                    if city == "Riyadh":
-                        print("RIYADH:")
-                        print("city, library, call number:", [city, lib, call_no])
                 except:
                     print("Error converting paragraph no.", i)
                     print("city, library, call number:", [city, lib, call_no])
@@ -125,13 +122,19 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         reader = csv.DictReader(file, delimiter="\t")
         
         not_found = []
-        for row in reader:
-            call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
+        prev_row = {}
+        for i, row in enumerate(reader):
+            try:
+                call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
+            except Error as e:
+                print("Error normalizing call no:", e)
+                print("previous row:", prev_row["City"], prev_row["Library"], prev_row["(Collection + ) Call Number"] )
             if call_no not in normalized_call_nos:
                 not_found.append(f'* {row["City"]} {row["Library"]} {row["(Collection + ) Call Number"]}'.strip())
             else:
                 #call_nos = [el for el in call_nos if el != call_no]
                 del normalized_call_nos[call_no]
+            prev_row = row
         if not_found: 
             print("call numbers not found in the Word document:")
             for n in not_found:
