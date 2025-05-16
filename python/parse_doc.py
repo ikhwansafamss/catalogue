@@ -122,19 +122,19 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         reader = csv.DictReader(file, delimiter="\t")
         
         not_found = []
-        prev_row = {}
         for i, row in enumerate(reader):
             try:
+                print(row["City"], row["(Collection + ) Call Number"] )
                 call_no = normalize_call_no(str(row["City"]).strip() + str(row["Library"]).strip().replace("’", "'")+ " " + str(row["(Collection + ) Call Number"]))
             except Exception as e:
                 print("Error normalizing call no:", e)
-                print("previous row:", prev_row["City"], prev_row["Library"], prev_row["(Collection + ) Call Number"] )
+                call_no = None
+                continue
             if call_no not in normalized_call_nos:
                 not_found.append(f'* {row["City"]} {row["Library"]} {row["(Collection + ) Call Number"]}'.strip())
             else:
                 #call_nos = [el for el in call_nos if el != call_no]
                 del normalized_call_nos[call_no]
-            prev_row = row
         if not_found: 
             print("call numbers not found in the Word document:")
             for n in not_found:
