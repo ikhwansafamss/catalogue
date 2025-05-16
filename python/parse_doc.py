@@ -108,6 +108,9 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             if text:
                 try:
                     d[city][lib][call_no] += '<p dir="auto">' + text + '</p>'
+                    if city == "Riyadh":
+                        print("RIYADH:")
+                        print("city, library, call number:", [city, lib, call_no])
                 except:
                     print("Error converting paragraph no.", i)
                     print("city, library, call number:", [city, lib, call_no])
