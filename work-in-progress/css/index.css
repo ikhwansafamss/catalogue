@@ -212,6 +212,12 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
     border-left-color: transparent;
 }
 
+/*https://datatables.net/forums/discussion/79277/maximum-column-width-for-all-columns*/
+.tablecell-content {
+    max-width: 400px; /* Set your desired max width */
+    word-wrap: break-word; /* Allow text to wrap to new lines */
+    white-space: normal; /* Ensure text wraps */
+}
 
 #footer {
     text-align: center;

@@ -126,7 +126,7 @@ $.get(tsvPath, function(contents) {
         quoteChar: false,     // consider quote characters " and ' as literal quotes
         skipEmptyLines: true,
         complete: function(results) {
-            setTimeout(() => {
+            setTimeout(() => { // wait 50 ms before loading the datatable
                 // after the tsv file is loaded, extract the column headers
                 // and create the column toggle:
 
@@ -154,7 +154,10 @@ $.get(tsvPath, function(contents) {
                             title: columnAliases[key] || key,
                             visible: initiallyVisible.includes(key),
                             orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,
-                            type: "natural-ci"  // adapted version of https://datatables.net/plug-ins/sorting/natural
+                            type: "natural-ci",  // adapted version of https://datatables.net/plug-ins/sorting/natural
+                            "render": function (data, type, row, meta) {
+                                return '<div class="tablecell-content">' + data + '</div>';
+                            }
                         });
                     };
                 }
