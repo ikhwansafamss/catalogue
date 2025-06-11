@@ -1,7 +1,7 @@
 """Create a new release of the website.
 
-The URL of the new release will look like this: https://pverkind.github.io/IkhwanMss/vYYYY-MM-DD
-The base URL (https://pverkind.github.io/IkhwanMss/) will always redirect to the latest release
+The URL of the new release will look like this: https://ikhwansafamss.github.io/catalogue/vYYYY-MM-DD
+The base URL (https://ikhwansafamss.github.io/catalogue/) will always redirect to the latest release
 """
 
 from datetime import datetime
@@ -14,7 +14,7 @@ import markdown
 working_dir = "work-in-progress"
 redirect_template_fp  = "templates/redirect.html"
 page_template_fp  = "templates/page_template.html"
-base_url = "https://pverkind.github.io/IkhwanMss/"
+base_url = "https://ikhwansafamss.github.io/catalogue/"
 
 # get or create the name of the new release:
 try:
@@ -38,8 +38,8 @@ with open(revision_fp, mode="r", encoding="utf-8") as file:
     revision_text = file.read()
 
 # make the new release version the current version:
-revision_text = re.sub(r"The release you're looking at is.+", 
-                       f"The release you're looking at is **[{release_folder}]({release_url})**",
+revision_text = re.sub(r"The current release is.+", 
+                       f"The current release is **[{release_folder}]({release_url})**",
                        revision_text)
 
 # add the new release version to the release list (if it has not yet been manually added):
