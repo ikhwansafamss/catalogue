@@ -1,19 +1,12 @@
-This repo contains a first draft of a website for Gowaart's metadata on Ikhwān al-Ṣafā manuscripts. 
-
-Temporary website address: https://pverkind.github.io/IkhwanMss/
-
-TO DO: 
-* user customization: let user decide which columns are shown in the table? (https://datatables.net/examples/api/show_hide.html)
-* separate landing page?
-* add a "how to cite this website?" section?
-
 # Intro
+
+This website contains a growing catalogue of Ikhwan al-Safa manuscripts.
 
 The website is versioned: the index.html file in the root folder of the repository 
 will redirect to the latest released version (releases are dated: vYYYY-MM-DD, e.g., v2024-05-30).
 
 External users should only use the released version, which is citable and does not change.
-The latest changes (since the latest release) are visible under https://pverkind.github.io/IkhwanMss/work-in-progress.
+The latest changes (since the latest release) are visible under https://ikhwansafamss.github.io/catalogue/work-in-progress.
 
 This website is based on two data sources, both in Google drive: 
 * a spreadsheet containing the main data in the table
@@ -97,3 +90,9 @@ The content of the root folder of your repo is now served under <your_github_nam
 |- requirements.txt: a list of all Python libraries used by the Python scripts
 |- README.md: this documentation file
 ```
+
+TO DO: 
+* user customization: let user decide which columns are shown in the table? (https://datatables.net/examples/api/show_hide.html)
+* separate landing page?
+* add a "how to cite this website?" section?
+
