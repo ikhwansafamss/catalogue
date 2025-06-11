@@ -42,7 +42,7 @@ For this to work, you should:
 
 1. enable GitHub Actions with the correct permissions:
 
-* Under your repository name (IkhwanMss), click  Settings. If you cannot see the "Settings" tab, select the  dropdown menu, then click Settings.
+* Under your repository name (catalogue), click  Settings. If you cannot see the "Settings" tab, select the  dropdown menu, then click Settings.
 * In the left sidebar, click  Actions, then click General.
 * scroll down to "Workflow permissions", select "Read and write permissions" and press "save".
 
@@ -51,7 +51,7 @@ For this to work, you should:
 * Under your repository name, click  Settings. If you cannot see the "Settings" tab, select the  dropdown menu, then click Settings.
 * In the left sidebar, click  Pages
 * Under "branch", choose "main", keep the default location as "root/"  and click "save"
-The content of the root folder of your repo is now served under <your_github_name>.github.io/IkhwanMss
+The content of the root folder of your repo is now served under <your_github_name>.github.io/catalogue
 (and because we have put the index.html file in the root folder, that will be displayed by default when you go to that page)
 
 # Folder structure
