@@ -24,7 +24,7 @@ and rebuild the json file that is the data source for the details in the table.
 (the website is also automatically updated whenever something in the repository was changed manually)
 
 These changes will be visible only in the work-in-progress page
-(https://pverkind.github.io/IkhwanMss/work-in-progress). 
+(https://ikhwansafamss.github.io/catalogue/work-in-progress). 
 
 If Gowaart feels a new version is ready to release, he can do that 
 by manually generating a new release version of the website: 
@@ -33,7 +33,7 @@ by manually generating a new release version of the website:
 * click on the "Run workflow" dropdown on the right, and inside the dropdown on the "Run workflow" button.
 
 This will copy the work-in-progress folder and generate a new folder
-named after today's date. Visitors of https://pverkind.github.io/IkhwanMss 
+named after today's date. Visitors of https://ikhwansafamss.github.io/catalogue 
 will be automatically forwarded to this new release of the website.
 
 # Setup
