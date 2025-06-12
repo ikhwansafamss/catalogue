@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikhwān manuscripts</title>
+    <!--
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css" />
+    -->
+    <link rel="stylesheet" href="css/dataTables.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dataTables.js"></script>
+    <script src="js/natural.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <!--Noto font: -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body dir="auto">
+    <div id="header">
+        <!--
+        <div id="title-wrapper">
+            <div class="header-title title-background">
+                <h1 >Ikhwān al-Ṣafā manuscripts</h1>
+            </div>
+            <div class="header-title title-foreground">
+                <h1>Ikhwan al-Safa manuscripts</h1>
+            </div>
+        </div>
+        <img class="colophon" src="img/colophon.svg"/>
+        -->
+        <img id="titleColophon" class="colophon" src="img/colophon5_thuluth_paths.svg"/>
+    </div>
+    <div id="aboutDiv" class="cell-border" style="display: none;">
+      <table>
+        <tr>
+          <td>Know, oh brother, may God inspire you and us with a spirit coming from Him, 
+            that this website compiles information about manuscripts of the Ikhwān al-ṣafāʿ 
+            textual tradition. 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            The definition of what texts fall under the “Ikhwan al-safa” corpus for this website 
+            is deliberately broad. Alongside the core text Rasāʿil ikhwān al-ṣafāʿ and 
+            its sister-texts Risālat al-jāmiʾa and Risālat jāmiʿat al-jāmiʿa, 
+            the website also lists manuscripts of the Persian abridged translation Mujmal al-ḥikma. 
+            Also included are a number of personal abridgements or selections from the Ikhwanian 
+            corpus. Currently excluded are Lami’î çelebi’s Serefü-l-insân and the rich corpus of 
+            Ismāʿīlī texts which cite from the Ikhwanian corpus. 
+          </td>
+        </tr>
+        <tr>
+          <td>The data was compiled starting in 2019 from various catalogues, on-line databases, 
+            and from consultation of physical or scanned manuscripts. 
+            The data is continually updated and harmonised. 
+            The website automatically displays the latest version while archived versions 
+            may be found on GitHub.
+            I am grateful to Aslisho Qurboniev, Omar Ali-de-Unzaga and Boris Liebrenz for their suggestions 
+            and contributions to the data collection for this page. 
+            These contributions are noted in the relevant data descriptions.</td>
+        </tr>
+        <tr>
+          <td>For any corrections/additions/suggestions, contact Gowaart Van Den Bossche at gowaartvdb [at] gmail [dot] com.</td>
+        </tr>
+        <tr>
+          <td>
+            Common abbreviations used in the data fields:
+              <ul style="list-style-type:none;">
+                <li>K. = Kitābkhāne</li>
+                <li>Vidi = Gowaart inspected the MS in person</li>
+                <li>Vidi (scan) = Gowaart inspected a digitised copy of the MS or a microfilm of it.</li>
+              </ul>
+          </td>
+        </tr>      
+      </table>
+    </div>
+    <div id="tableDiv">
+      <table id="msTable" class="cell-border"></table>  <!--display cell borders-->
+      <div id="toggleDiv"></div>
+    </div>
+    <div id="footer">
+      <p class="triangles">
+        The layout of this website is based on 
+        <a target="_blank" href="https://digital.bodleian.ox.ac.uk/objects/12fcf5c5-2bb0-4e0e-b8a9-7620bd6bec90/surfaces/d503afb6-1cd0-4e25-b5db-604481968a13/">Bodleian MS. Laud Or. 260</a>
+      </p>
+      <p class="triangles">
+        Data collected by Gowaart Van Den Bossche
+      </p>
+      <p class="triangles">
+        Website by Peter Verkinderen
+      </p>
+      <p class="triangles">
+        View the data on <a href="https://github.com/ikhwansafamss/catalogue/tree/main/v2025-06-12/data" target="_blank">GitHub</a>
+      </p>
+      <p class="triangles">
+        Version history <a href="release-notes.html">here.</a>
+      </p>
+      <p>
+        <span class="single-triangle"></span>
+        <span class="single-triangle"></span>
+        <span class="single-triangle"></span>
+      </p>
+      <p>
+        <span class="single-triangle"></span>
+      </p>
+    </div>
+    
+    <script src="js/index.js"></script>
+    
+</body>
+</html>
