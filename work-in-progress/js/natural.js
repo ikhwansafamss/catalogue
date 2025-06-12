@@ -151,32 +151,63 @@ DataTable.type("natural-nohtml", {
 DataTable.type("natural-ci", {
     order: {
         asc: function (a, b) {
+            a = DataTable.util.stripHtml(a);
+            b = DataTable.util.stripHtml(b);
             // sort null values at the end:
-            if (a == null || a == "") {
-                return 1;  
+            if (a == null) {
+                return 1;
+            } 
+            if (b == null) {
+                return -1;
+            } 
+            // convert to string and remove al-, hamza, ʿayn and non-alphanumeric characters to compare:
+            a = a.toString().toLowerCase().replace(/al-|ʾ|ʿ|[^\p{L}\p{N}]+/gu, "");
+            b = b.toString().toLowerCase().replace(/al-|ʾ|ʿ|[^\p{L}\p{N}]+/gu, "");
+            // sort empty strings at the end:
+            if (a == "") {
+                return 1;
             }
-            if (b == null || b == "") {
+            if (b == "") {
                 return -1;
             }
-            a = a.toString().toLowerCase();
-            b = b.toString().toLowerCase();
-            return a.localeCompare(b, navigator.languages[0] || navigator.language, {
-                numeric: true,
-                ignorePunctuation: true,
-            });
+            // natural sort:
+            return a.localeCompare(
+                b, navigator.languages[0] || navigator.language, 
+                {
+                    numeric: true,
+                    ignorePunctuation: true,
+                }
+            );
         },
         desc: function (a, b) {
+            a = DataTable.util.stripHtml(a);
+            b = DataTable.util.stripHtml(b);
             // sort null values at the end:
-            if (a == null || a == "") {
-                return 1;  
+            if (a == null) {
+                return 1;
+            } 
+            if (b == null) {
+                return -1;
+            } 
+            // convert to string and remove al-, hamza, ʿayn and non-alphanumeric characters to compare:
+            a = a.toString().toLowerCase().replace(/al-|ʾ|ʿ|[^\p{L}\p{N}]+/gu, "");
+            b = b.toString().toLowerCase().replace(/al-|ʾ|ʿ|[^\p{L}\p{N}]+/gu, "");
+            // sort empty strings at the end:
+            if (a == "") {
+                return 1;
             }
-            if (b == null || b == "") {
+            if (b == "") {
                 return -1;
             }
-            a = a.toString().toLowerCase();
-            b = b.toString().toLowerCase();
-            return (a.localeCompare(b, navigator.languages[0] || navigator.language, { numeric: true, ignorePunctuation: true }) *
-                -1);
+            // natural sort:
+            return (-1 * a.localeCompare(
+                b, 
+                navigator.languages[0] || navigator.language, 
+                {
+                    numeric: true, 
+                    ignorePunctuation: true 
+                }
+            ));
         },
     },
     className: "natural-sort",

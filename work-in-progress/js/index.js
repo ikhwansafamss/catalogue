@@ -128,7 +128,7 @@ $.get(jsonPath, function(contents) {
                 // after the tsv file is loaded, extract the column headers
                 // and create the column toggle:
 
-                //console.log(results.data);
+                console.log(results.data);
                 //console.log(results.errors);
 
                 let columns = [
@@ -151,7 +151,7 @@ $.get(jsonPath, function(contents) {
                             data: key,
                             title: columnAliases[key] || key,
                             visible: initiallyVisible.includes(key),
-                            /*orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,*/
+                            orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,
                             type: "natural-ci",  // adapted version of https://datatables.net/plug-ins/sorting/natural
                             render: function (data, type, row, meta) {
                                 return '<div class="tablecell-content">' + data + '</div>';
