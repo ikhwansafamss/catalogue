@@ -10,6 +10,10 @@ b, strong {
     font-style: italic;
 }
 
+ul {
+    list-style-position: inside;
+}
+
 /*Add paper-style background: https://stackoverflow.com/a/63615485*/
 body {
     margin: 0; /* box shadow seems to add a margin by default*/
@@ -26,6 +30,15 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 40%;    
+}
+
+#pageContent {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    font-family: "Noto Sans Display";
 }
 
 #aboutDiv {
