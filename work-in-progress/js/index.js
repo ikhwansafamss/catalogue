@@ -23,6 +23,10 @@ function preprocessData(data){
     return formattedData;
 }
 
+function regexEscape(s){ 
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
+}
+
 function normalizeCallNo(s){
     return s.replace(/[^a-zA-Z0-9۰-۹?]+/g, "");
 }
@@ -178,7 +182,8 @@ $.get(jsonPath, function(contents) {
                     data: data,
                     pageLength: 25,  // number of rows displayed by default
                     lengthMenu: [10, 25, 50, { label: 'All', value: -1 }],
-                    columns: columns
+                    columns: columns,
+                    search: { regex: true, smart: true }
                 });
                 // Add event listener for opening and closing details: 
                 table.on('click', 'td.dt-control', function (e) {
@@ -229,4 +234,88 @@ titleColophon.addEventListener("click", function(e) {
       } else {
         aboutDiv.style.display = "none";
       }
+});
+
+
+/**********************************
+ * Map
+ **********************************/
+
+// Initialize the map
+var map = L.map('map').setView([20, 50], 2); // Center the world here + zoom level
+map.setMaxBounds(  [[-90,-180],   [90,180]]  ) // only one world!
+
+/*// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);*/
+// Add Stamen watercolor tiles
+var Stadia_StamenWatercolor = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}', {
+    minZoom: 1,
+    maxZoom: 16,
+    attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    ext: 'jpg'
+});
+Stadia_StamenWatercolor.addTo(map);
+
+// Create a marker cluster group (to combine )
+var markers = L.markerClusterGroup();
+// NB: marker icon (css/images/marker-icon.png) taken from the Piri Reis world map: https://upload.wikimedia.org/wikipedia/commons/7/70/Piri_reis_world_map_01.jpg
+
+// Load CSV file
+Papa.parse('data/library_coordinates.tsv', {
+    download: true,
+    header: true,
+    delimiter: "\t",
+    complete: function(results) {
+        results.data.forEach(function(row) {
+            if (row.latitude && row.longitude) {
+                var marker = L.marker([parseFloat(row.latitude), parseFloat(row.longitude)]);
+                let markerText = `
+                  <b>${row.city}</b>
+                  <br>
+                  <a href="#" class="place-filter" data-place="${encodeURIComponent(row.library)}">
+                    ${row.library}
+                  </a>`;
+                marker.bindPopup(markerText);
+                /*marker.on('click', () => {
+                    // Column-specific exact-match filter on the "Place" column (index 1)
+                    //table.column(1).search(exact, true, false).draw();
+                    table.search(row.library).draw();
+                });*/
+                markers.addLayer(marker);
+            }
+        });
+        map.addLayer(markers);
+    }
+});
+
+// EVENT DELEGATION: one handler for all current/future popups.
+// This only fires when the user clicks the link in the popup.
+map.getPanes().popupPane.addEventListener('click', (e) => {
+    const a = e.target.closest('a.place-filter');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation(); // don't treat it as a marker/map click
+
+    const place = decodeURIComponent(a.dataset.place);
+
+    // Column-specific filter (change 1 to your "Place" column index)
+    //const exact = '^' + regexEscape(place) + '$';
+    //table.column(1).search(exact, true, false);
+    //table.search(regexEscape(place)).draw();
+    console.log(place);
+    table.column(2).search(place.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // no regex, yes smart search
+    table.draw();
+});
+
+// Optional: a tiny "clear filter" control in popups
+// (add this link to the popup HTML if you want it)
+// <a href="#" class="place-clear">Show all</a>
+map.getPanes().popupPane.addEventListener('click', (e) => {
+const clear = e.target.closest('a.place-clear');
+if (!clear) return;
+e.preventDefault();
+e.stopPropagation();
+table.search(''); table.columns().search(''); table.draw();
 });
