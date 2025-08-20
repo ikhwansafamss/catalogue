@@ -8,7 +8,7 @@ import time
 
 doc_url = "https://docs.google.com/document/d/1hZuWEOd0tFTWL7yGuKAfQODVpSWjgf3rcvsQi5D7AC8/edit?usp=sharing"
 sheet_url = "https://docs.google.com/spreadsheets/d/1jBbUb7qObE02WkVdkerRty0MIBRWsBh4SzTK725k7bM/edit#gid=0"
-
+coordinates_url = "https://docs.google.com/spreadsheets/d/1mnm5moetpQFnGLjKy54Cyv4p9kj4SqSpPen3ZddC90o/edit?gid=0"
 
 def extract_id_from_url(url):
     "https://drive.google.com/file/d/10jmLUriVDjViO9rR20rByb4REkwwYNJZ/view?usp=sharing"
@@ -107,9 +107,11 @@ def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
 
 def main():
     sheet_fp = "./work-in-progress/data/msData.tsv"
+    download_spreadsheet(sheet_url, sheet_fp)
     doc_fp = "./work-in-progress/data/msDescriptions.docx"
     download_file_from_gdrive(doc_url, doc_fp)
-    download_spreadsheet(sheet_url, sheet_fp)
+    coordinates_fp = "./work-in-progress/data/library_coordinates.tsv"
+    download_spreadsheet(coordinates_url, coordinates_fp)
     print("sleep 5 seconds before updating website data")
     time.sleep(5)
 
