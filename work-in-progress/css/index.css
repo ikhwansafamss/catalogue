@@ -275,6 +275,10 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
     margin: auto;
 }
 
-#resetFilters {
+#belowTableDiv {
     text-align: center;
+}
+
+#toggleDiv {
+    display: none;
 }

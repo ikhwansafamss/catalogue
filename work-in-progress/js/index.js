@@ -113,7 +113,7 @@ titleColophon.addEventListener("click", function(e) {
 
 let table;
 let descriptions;
-let toggleStr = "Toggle columns: ";
+let toggleStr = "";
 const initiallyVisible = [
     "City", 
     "Library", 
@@ -253,6 +253,11 @@ $('#resetFilters').on('click', () => {
   table.search('');
   table.columns().search('');
   table.draw();
+  return false;
+})
+
+$('#toggleColumns').on('click', () => {
+  $('#toggleDiv').toggle();
   return false;
 })
 
