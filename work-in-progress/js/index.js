@@ -147,7 +147,7 @@ $.get(jsonPath, function(contents) {
                 // after the tsv file is loaded, extract the column headers
                 // and create the column toggle:
 
-                console.log(results.data);
+                //console.log(results.data);
                 //console.log(results.errors);
 
                 let columns = [
@@ -253,6 +253,7 @@ $('#resetFilters').on('click', () => {
   table.search('');
   table.columns().search('');
   table.draw();
+  return false;
 })
 
 
@@ -321,11 +322,13 @@ map.getPanes().popupPane.addEventListener('click', (e) => {
     const lib = decodeURIComponent(a.dataset.lib);
     const city = decodeURIComponent(a.dataset.city);
 
-    // Column-specific filter:
+    // reset existing filters:
     table.search('');
     table.columns().search('');
-    table.column(1).search(city.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
-    table.column(2).search(lib.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
+    // Column-specific filter:
+    // NB: search does not work with special characters... replace them with wildcard:
+    table.column(1).search(city.replace(/[^a-zA-Z ]/g, "."), true, false); // regex, not smart search
+    table.column(2).search(lib.replace(/[^a-zA-Z ]/g, "."), true, false);
     table.draw();
     // alternatively: table-wide filter:
     //table.search(regexEscape(lib)).draw();
