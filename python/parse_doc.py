@@ -87,7 +87,6 @@ def get_coordinates(coordinates_fp):
     with open(coordinates_fp, mode="r", encoding="utf-8") as file:
         reader = csv.DictReader(file, delimiter="\t")
         for row in reader:
-            print(row)
             lib = row["library"].strip().replace("’", "'")
             city = row["city"].strip()
             k = f"{lib}, {city}"
