@@ -169,7 +169,20 @@ $.get(jsonPath, function(contents) {
                         let city = row["City"].trim();
                         let lib = String(row["Library"]).trim().replace(/’/g, "'");
                         let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
-                        return descriptions[city][lib][callNo];
+                        //console.log("lib: "+lib);
+                        //console.log("city: "+city);
+                        //console.log("callNo: "+callNo);
+                        //console.log(descriptions[city][lib][callNo]);
+                        //return descriptions[city][lib][callNo];
+                        try {
+                          return descriptions[city][lib][callNo];
+                        } catch(err) {
+                            console.log(err);
+                            //console.log(descriptions);
+                            //console.log(descriptions[city])
+                            //console.log(descriptions[city][lib])
+                            return "";
+                        }
                     },
                     visible: false, 
                     title: "Description"
