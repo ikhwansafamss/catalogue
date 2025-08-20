@@ -274,3 +274,7 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
     width: 60%;
     margin: auto;
 }
+
+#resetFilters {
+    text-align: center;
+}

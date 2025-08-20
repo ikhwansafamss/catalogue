@@ -92,6 +92,21 @@ function format(rowData) {
     return hiddenRowHtml;
 }
 
+
+/**********************************
+ * Show/hide about div
+ **********************************/
+const titleColophon = document.getElementById("titleColophon");
+const aboutDiv = document.getElementById("aboutDiv");
+titleColophon.addEventListener("click", function(e) {
+    if (aboutDiv.style.display == "none") {
+        aboutDiv.style.display = "block";
+      } else {
+        aboutDiv.style.display = "none";
+      }
+});
+
+
 /***************
  * BUILD TABLE *
  ***************/
@@ -99,6 +114,14 @@ function format(rowData) {
 let table;
 let descriptions;
 let toggleStr = "Toggle columns: ";
+const initiallyVisible = [
+    "City", 
+    "Library", 
+    "(Collection + ) Call Number", 
+    "Witness to text",
+    "Date AH",
+    "Date CE",
+];
 
 let jsonPath = "data/msDescriptions.json";
 $.get(jsonPath, function(contents) {
@@ -109,14 +132,6 @@ $.get(jsonPath, function(contents) {
         "(Collection + ) Call Number": "Call Number",
         "Witness to text": "Text"
     };
-    let initiallyVisible = [
-        "City", 
-        "Library", 
-        "(Collection + ) Call Number", 
-        "Witness to text",
-        "Date AH",
-        "Date CE",
-    ];
     //let tsvPath = "data/IkhwanSafaMSSOverview - Blad1.tsv";
     let tsvPath = "data/msData.tsv"
     $.get(tsvPath, function(contents) {
@@ -169,18 +184,13 @@ $.get(jsonPath, function(contents) {
                         let city = row["City"].trim();
                         let lib = String(row["Library"]).trim().replace(/’/g, "'");
                         let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
-                        //console.log("lib: "+lib);
-                        //console.log("city: "+city);
-                        //console.log("callNo: "+callNo);
-                        //console.log(descriptions[city][lib][callNo]);
-                        //return descriptions[city][lib][callNo];
                         try {
                           return descriptions[city][lib][callNo];
                         } catch(err) {
                             console.log(err);
-                            //console.log(descriptions);
-                            //console.log(descriptions[city])
-                            //console.log(descriptions[city][lib])
+                            console.log("lib: "+lib);
+                            console.log("city: "+city);
+                            console.log("callNo: "+callNo);
                             return "";
                         }
                     },
@@ -237,17 +247,13 @@ $.get(jsonPath, function(contents) {
 });
 
 /**********************************
- * Show/hide about div
+ * Reset table button
  **********************************/
-const titleColophon = document.getElementById("titleColophon");
-const aboutDiv = document.getElementById("aboutDiv");
-titleColophon.addEventListener("click", function(e) {
-    if (aboutDiv.style.display == "none") {
-        aboutDiv.style.display = "block";
-      } else {
-        aboutDiv.style.display = "none";
-      }
-});
+$('#resetFilters').on('click', () => {
+  table.search('');
+  table.columns().search('');
+  table.draw();
+})
 
 
 /**********************************
@@ -287,8 +293,9 @@ Papa.parse('data/library_coordinates.tsv', {
                 let markerText = `
                   <b>${row.city}</b>
                   <br>
-                  <a href="#" class="place-filter" data-place="${encodeURIComponent(row.library)}">
-                    ${row.library}
+                  ${row.library}
+                  <a href="#" class="place-filter" data-city="${encodeURIComponent(row.city)}" data-lib="${encodeURIComponent(row.library)}">
+                    (filter)
                   </a>`;
                 marker.bindPopup(markerText);
                 /*marker.on('click', () => {
@@ -311,24 +318,13 @@ map.getPanes().popupPane.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation(); // don't treat it as a marker/map click
 
-    const place = decodeURIComponent(a.dataset.place);
+    const lib = decodeURIComponent(a.dataset.lib);
+    const city = decodeURIComponent(a.dataset.city);
 
-    // Column-specific filter (change 1 to your "Place" column index)
-    //const exact = '^' + regexEscape(place) + '$';
-    //table.column(1).search(exact, true, false);
-    //table.search(regexEscape(place)).draw();
-    console.log(place);
-    table.column(2).search(place.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // no regex, yes smart search
+    // Column-specific filter:
+    table.column(1).search(city.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
+    table.column(2).search(lib.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
     table.draw();
-});
-
-// Optional: a tiny "clear filter" control in popups
-// (add this link to the popup HTML if you want it)
-// <a href="#" class="place-clear">Show all</a>
-map.getPanes().popupPane.addEventListener('click', (e) => {
-const clear = e.target.closest('a.place-clear');
-if (!clear) return;
-e.preventDefault();
-e.stopPropagation();
-table.search(''); table.columns().search(''); table.draw();
+    // alternatively: table-wide filter:
+    //table.search(regexEscape(lib)).draw();
 });
