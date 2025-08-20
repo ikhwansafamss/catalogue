@@ -77,6 +77,19 @@ def clean_paragraph(p):
 
     return p
     
+def get_coordinates(coordinates_fp):
+    """get the libraries' coordinates from the tsv file
+    
+    Args:
+        coordinates_fp (str): path to the file containing the libraries' coordinates
+    """
+    coordinates_d = {}
+    with open(coordinates_fp, mode="r", encoding="utf-8") as file:
+        reader = csv.DictReader(file, delimiter="\t")
+        for row in reader:
+            k = f"""{row["library"].strip().replace("’", "'")}, {row["city"].strip()}"""
+            coordinates_d[k] = [row["longitude"], row["latitude"]]
+    return coordinates_d
 
 def parse_doc(doc_fp, sheet_fp, json_fp):
     """Parse a Word document. 
@@ -88,6 +101,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
     """
     d = dict()
     call_nos = []
+    no_coordinates = []
     document = Document(doc_fp)
     for i, paragraph in enumerate(document.paragraphs):
         if paragraph.style.name.startswith('Heading 1'):
@@ -98,23 +112,32 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         elif paragraph.style.name.startswith('Heading 2'):
             lib = paragraph.text.strip().replace("’", "'")
             d[city][lib] = dict()
+            k = f"{lib}, {city}"
+            if k not in coordinates_d:
+                no_coordinates.append(k)
+            #    d[city][lib] = {"mss": [], "coords": [-20, 20]}
+            #else:
+            #    d[city][lib] = {"mss": [], "coords": coordinates_d[k]}
+                
         elif paragraph.style.name.startswith('Heading 3'):
-            call_nos.append(city + " " + lib + " " + paragraph.text)
+            call_nos.append(city + " " + lib + " " + paragraph.text.strip())
             call_no = normalize_call_no(paragraph.text)
             d[city][lib][call_no] = ""
+            #d[city][lib]["mss"].append({"call_no": call_no, "descr": ""})
         else:
             text = extract_text(paragraph)
             text = clean_paragraph(text)
             if text:
                 try:
                     d[city][lib][call_no] += '<p dir="auto">' + text + '</p>'
+                    #d[city][lib]["mss"][-1]["descr"] += '<p dir="auto">' + text + '</p>'
                 except:
                     print("Error converting paragraph no.", i)
                     print("city, library, call number:", [city, lib, call_no])
                     print("paragraph text:", [paragraph.text])
                     print("----")
-    with open(json_fp, mode="w", encoding="utf-8") as file:
-        json.dump(d, file, indent=2, ensure_ascii=False)
+    #with open(json_fp, mode="w", encoding="utf-8") as file:
+    #    json.dump(d, file, indent=2, ensure_ascii=False)
 
     # check if there are manuscripts in the tsv file that are not in the json and vice versa:
     normalized_call_nos = {normalize_call_no(call_no): call_no for call_no in call_nos}
@@ -151,6 +174,17 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
         else:
             print("All call numbers from the Word document were found in the spreadsheet.")
 
+        print("----")
+
+        if no_coordinates:
+            print("Libraries for which no coordinates were defined yet:")
+            for k in no_coordinates:
+                print("*", k)
+        else:
+            print("All call numbers from the Word document were found in the spreadsheet.")
+
+coordinates_fp = "./work-in-progress/data/library_coordinates.tsv"
+coordinates_d = get_coordinates(coordinates_fp)
 
 doc_fp = "./work-in-progress/data/msDescriptions.docx"
 sheet_fp = "./work-in-progress/data/msData.tsv"
