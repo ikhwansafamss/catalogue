@@ -106,7 +106,7 @@ body {
 /* Red colours for the table borders:*/
 
 table {
-    border: 3px double #cf705eff;
+    border: 1px solid #cf705eff;
     border-radius: 1px;
 }
 
