@@ -322,6 +322,8 @@ map.getPanes().popupPane.addEventListener('click', (e) => {
     const city = decodeURIComponent(a.dataset.city);
 
     // Column-specific filter:
+    table.search('');
+    table.columns().search('');
     table.column(1).search(city.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
     table.column(2).search(lib.replace(/[^a-zA-Z ]/g, "."), true, false).draw(); // regex, not smart search
     table.draw();
