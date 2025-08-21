@@ -340,6 +340,7 @@ Papa.parse('data/library_coordinates.tsv', {
                     table.search('');
                     table.columns().search('');
                     table.draw();
+                    return false;
                 });
                 markers.addLayer(marker);
             }
