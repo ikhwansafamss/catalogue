@@ -334,6 +334,13 @@ Papa.parse('data/library_coordinates.tsv', {
                     (filter)
                   </a>`;
                 marker.bindPopup(markerText);
+                marker.getPopup().on('remove', function() {
+                    console.log("removing the filter");
+                    // reset existing filters:
+                    table.search('');
+                    table.columns().search('');
+                    table.draw();
+                });
                 markers.addLayer(marker);
             }
         });
@@ -344,17 +351,22 @@ Papa.parse('data/library_coordinates.tsv', {
 // EVENT DELEGATION: one handler for all current/future popups.
 // This only fires when the user clicks the link in the popup.
 map.getPanes().popupPane.addEventListener('click', (e) => {
-    const a = e.target.closest('a.place-filter');
-    if (!a) return;
+    // reset existing filters:
+    table.search('');
+    table.columns().search('');
+
+    console.log(e);
+    //const a = e.target.closest('a.place-filter');
+    //if (!a) return;
+    const a = e.target;
+    if (!a.classList.contains("place-filter")) return;
+    console.log(a);
     e.preventDefault();
     e.stopPropagation(); // don't treat it as a marker/map click
 
     const lib = decodeURIComponent(a.dataset.lib);
     const city = decodeURIComponent(a.dataset.city);
 
-    // reset existing filters:
-    table.search('');
-    table.columns().search('');
     // Column-specific filter:
     // NB: search does not work with special characters... replace them with wildcard:
     table.column(1).search(city.replace(/[^a-zA-Z ]/g, "."), true, false); // regex, not smart search
