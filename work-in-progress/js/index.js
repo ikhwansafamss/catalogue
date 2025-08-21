@@ -286,11 +286,11 @@ Stadia_StamenWatercolor.addTo(map);
 // custom icon: from the Venice map of Piri Reis (https://en.wikipedia.org/wiki/File:Venice_by_Piri_Reis.jpg)
 var veniceIcon = L.icon({
     iconUrl: 'css/images/venice-marker-icon.png',
-    shadowUrl: 'css/images/venice-marker-shadow.png',
+    //shadowUrl: 'css/images/venice-marker-shadow.png',
     iconSize: [32, 48],
     iconAnchor: [16, 48],
     popupAnchor: [0, -44],
-    shadowSize:   [50, 64],
+    //shadowSize: [32, 48],
 });
 /*
 // alterative icon: from the Piri Reis world map: https://upload.wikimedia.org/wikipedia/commons/7/70/Piri_reis_world_map_01.jpg
