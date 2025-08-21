@@ -75,11 +75,12 @@ def extract_id_from_url(url):
 
 def download_file_from_gdrive(url, fp):
     """https://stackoverflow.com/a/39225272"""
-    print("download file from google drive:", url)
+    print("url:", url)
     file_id = extract_id_from_url(url)
-    print(file_id)
+    print("-> file id:", file_id)
     gurl = "https://docs.google.com/uc?export=download&confirm=1"
     gurl = f"https://docs.google.com/document/d/{file_id}/export?format=docx"
+    print("-> gurl:", gurl)
     session = requests.Session()
     response = session.get(gurl, stream=True)
     with open(fp, "wb") as f:
@@ -94,8 +95,11 @@ def download_file_from_gdrive(url, fp):
 
 
 def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
+    print("url:", url)
     file_id = extract_id_from_url(url)
+    print("-> file id:", file_id)
     gurl = f"https://docs.google.com/spreadsheets/d/{file_id}/export?gid={sheet_no}&format={format}"
+    print("-> gurl:", gurl)
     session = requests.Session()
     response = session.get(gurl, params={"id": file_id, "gid": sheet_no}, stream=True)
     with open(fp, "wb") as f:
@@ -106,10 +110,13 @@ def download_spreadsheet(url, fp, sheet_no=0, format="tsv"):
     
 
 def main():
+    print("Download spreadsheet")
     sheet_fp = "./work-in-progress/data/msData.tsv"
     download_spreadsheet(sheet_url, sheet_fp)
+    print("Download manuscript descriptions")
     doc_fp = "./work-in-progress/data/msDescriptions.docx"
     download_file_from_gdrive(doc_url, doc_fp)
+    print("Download coordinates")
     coordinates_fp = "./work-in-progress/data/library_coordinates.tsv"
     download_spreadsheet(coordinates_url, coordinates_fp)
     print("sleep 5 seconds before updating website data")

@@ -275,7 +275,7 @@
     }
   },
   "Jedda": {
-    "Jāmiʿa al-Malik ʿAbd al-ʿAzīz": {
+    "Jāmiʿat al-Malik ʿAbd al-ʿAzīz": {
       "11927": "<p dir=\"auto\">Partial copy of the <span class=\"italics\">Rasāʾil ikhwān al-ṣafāʾ</span> evidently (based on start and end of manuscript included in database) starting at 2.1. End unclear, but the manuscript only contains 101 folios.</p><p dir=\"auto\">Copied by Tūmā Buṭrus Jabāra al-ṭabīb, dated to 1801 – no hijrī date given, perhaps because the copyist is clearly Christian.</p><p dir=\"auto\">Two seals on title page and two on first text page, but no details given.</p><p dir=\"auto\">22 lines per page, 17x22 cm. Rubrication of some words.</p>"
     }
   },
@@ -652,8 +652,9 @@
     }
   },
   "Riyadh": {
-    "al-Jāmiʿa al-imām Muḥammad b. Saʿūd al-islāmiyya": {
-      "Unkowncallnumber": "<p dir=\"auto\">Only info available is the title and the fact that the manuscript contains 201 folios. This seems too little to cover the full text hence why I assume it is a partial copy.</p>",
+    "Jāmiʿat al-imām Muḥammad b. Saʿūd al-islāmiyya": {
+      "Unknowncallnumber": "<p dir=\"auto\">Very little info available. I assume it is a partial copy because of its size of 280 folios with 18 lines per page, which seems too little to cover the full text.</p><p dir=\"auto\">The manuscript was copied by ʿAbd al-Raḥīm b. shaykh Maḥmūd Multānī.</p>",
+      "Unknowncallnumber2": "<p dir=\"auto\">Only info available is the title and the fact that the manuscript contains 201 folios. This seems too little to cover the full text hence why I assume it is a partial copy.</p>",
       "6671?": "<p dir=\"auto\">“Mukhtaṣar Rasāʾil ikhwān al-ṣafāʾ ʿalā al-tamām waʾl-kamāl waʾl-ḥamdu liʾl-Lāh ʿalā kull ḥāl...”</p><p dir=\"auto\">60 folios.</p><p dir=\"auto\">Authorship attributed to Dāwūd b. ʿUmar al-Anṭākī (d. 1008/1559), a famous physician and scholar of the 16th century. Compare MS Ankara Adnan Ötüken İl Halk Kütüphanesi 06 Hk 1454 (where there is no authorship attribution on title page).</p><p dir=\"auto\">First page of likely this MS available here (download link for whole MS is dead), whence the shelfmark: <a href=\"https://ketabpedia.com/تحميل/مختصر-رسائل-اخوان-الصفا/\" target=\"_blank\">https://ketabpedia.com/تحميل/مختصر-رسائل-اخوان-الصفا/</a></p><p dir=\"auto\">Basic data on the MS in Arabic but no shelfmark noted: <a href=\"https://eservices.kfnl.gov.sa:8060/mans/Home/Details/bc2225aa-bb9b-50d2-74c7-41d3e1f8a02a\" target=\"_blank\">https://eservices.kfnl.gov.sa:8060/mans/Home/Details/bc2225aa-bb9b-50d2-74c7-41d3e1f8a02a</a></p>"
     },
     "Maktabat al-Malik ʿAbd al-ʿAzīz al-ʿāmma": {

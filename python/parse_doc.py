@@ -93,7 +93,7 @@ def get_coordinates(coordinates_fp):
             coordinates_d[k] = [row["longitude"], row["latitude"]]
     return coordinates_d
 
-def parse_doc(doc_fp, sheet_fp, json_fp):
+def parse_doc(doc_fp, sheet_fp, json_fp, coordinates_d):
     """Parse a Word document. 
     
     Args:
@@ -116,6 +116,7 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
             d[city][lib] = dict()
             k = f"{lib}, {city}"
             if k not in coordinates_d:
+                print(k)
                 no_coordinates.append(k)
             #    d[city][lib] = {"mss": [], "coords": [-20, 20]}
             #else:
@@ -138,8 +139,8 @@ def parse_doc(doc_fp, sheet_fp, json_fp):
                     print("city, library, call number:", [city, lib, call_no])
                     print("paragraph text:", [paragraph.text])
                     print("----")
-    #with open(json_fp, mode="w", encoding="utf-8") as file:
-    #    json.dump(d, file, indent=2, ensure_ascii=False)
+    with open(json_fp, mode="w", encoding="utf-8") as file:
+        json.dump(d, file, indent=2, ensure_ascii=False)
 
     # check if there are manuscripts in the tsv file that are not in the json and vice versa:
     normalized_call_nos = {normalize_call_no(call_no): call_no for call_no in call_nos}
@@ -191,4 +192,4 @@ coordinates_d = get_coordinates(coordinates_fp)
 doc_fp = "./work-in-progress/data/msDescriptions.docx"
 sheet_fp = "./work-in-progress/data/msData.tsv"
 json_fp = "./work-in-progress/data/msDescriptions.json"
-parse_doc(doc_fp, sheet_fp, json_fp)
+parse_doc(doc_fp, sheet_fp, json_fp, coordinates_d)
