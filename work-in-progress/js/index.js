@@ -283,9 +283,39 @@ var Stadia_StamenWatercolor = L.tileLayer('https://tiles.stadiamaps.com/tiles/st
 });
 Stadia_StamenWatercolor.addTo(map);
 
-// Create a marker cluster group (to combine )
-var markers = L.markerClusterGroup();
-// NB: marker icon (css/images/marker-icon.png) taken from the Piri Reis world map: https://upload.wikimedia.org/wikipedia/commons/7/70/Piri_reis_world_map_01.jpg
+// custom icon: from the Venice map of Piri Reis (https://en.wikipedia.org/wiki/File:Venice_by_Piri_Reis.jpg)
+var veniceIcon = L.icon({
+    iconUrl: 'css/images/venice-marker-icon.png',
+    shadowUrl: 'css/images/venice-marker-shadow.png',
+    iconSize: [32, 48],
+    iconAnchor: [16, 48],
+    popupAnchor: [0, -44],
+    shadowSize:   [50, 64],
+});
+/*
+// alterative icon: from the Piri Reis world map: https://upload.wikimedia.org/wikipedia/commons/7/70/Piri_reis_world_map_01.jpg
+var worldmapIcon = L.icon({
+    iconUrl: 'css/images/worldmap-marker-icon.png',
+    shadowUrl: 'css/images/worldmap-marker-shadow.png',
+    iconSize: [32, 48],
+    iconAnchor: [16, 48],
+    popupAnchor: [0, -44],
+    shadowSize:   [50, 64],
+});*/
+
+// Create a marker cluster group (to combine markers that are close together)
+const clusterIcon = L.icon({
+  iconUrl: 'css/images/venice-cluster-icon.png',
+  iconSize: [32, 48],
+  iconAnchor: [16, 48],
+  popupAnchor: [0, -44],
+  className: 'cluster-icon'
+});
+var markers = L.markerClusterGroup({
+    showCoverageOnHover:false,
+    maxClusterRadius:10,
+    iconCreateFunction: () => clusterIcon
+});
 
 // Load CSV file
 Papa.parse('data/library_coordinates.tsv', {
@@ -295,7 +325,7 @@ Papa.parse('data/library_coordinates.tsv', {
     complete: function(results) {
         results.data.forEach(function(row) {
             if (row.latitude && row.longitude) {
-                var marker = L.marker([parseFloat(row.latitude), parseFloat(row.longitude)]);
+                var marker = L.marker([parseFloat(row.latitude), parseFloat(row.longitude)], {icon: veniceIcon});
                 let markerText = `
                   <b>${row.city}</b>
                   <br>
@@ -304,11 +334,6 @@ Papa.parse('data/library_coordinates.tsv', {
                     (filter)
                   </a>`;
                 marker.bindPopup(markerText);
-                /*marker.on('click', () => {
-                    // Column-specific exact-match filter on the "Place" column (index 1)
-                    //table.column(1).search(exact, true, false).draw();
-                    table.search(row.library).draw();
-                });*/
                 markers.addLayer(marker);
             }
         });
