@@ -65,7 +65,7 @@ function format(rowData) {
     console.log("callNo:" + callNo);
     let descr = descriptions[city][lib][normalizeCallNo(callNo)];
 
-    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?-]+/g, "-").replace(/-+$/g, "");
     const baseUrl = window.location.origin + window.location.pathname;
     const href = `${baseUrl}?id=${encodeURIComponent(rowID)}`;
     
@@ -194,7 +194,7 @@ $.get(jsonPath, function(contents) {
                                     let city = row["City"].trim();
                                     let lib = String(row["Library"]).trim().replace(/’/g, "'");
                                     let callNo = String(row["(Collection + ) Call Number"]);
-                                    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+                                    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?-]+/g, "-").replace(/-+$/g, "");
                                     const baseUrl = window.location.origin + window.location.pathname;
                                     const href = `${baseUrl}?id=${encodeURIComponent(rowID)}`;
                                     return `<div class="tablecell-content"><a href="${href}">${data}</a></div>`;
@@ -231,7 +231,7 @@ $.get(jsonPath, function(contents) {
                         let city = row["City"].trim();
                         let lib = String(row["Library"]).trim().replace(/’/g, "'");
                         let callNo = String(row["(Collection + ) Call Number"]);
-                        let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+                        let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?-]+/g, "-").replace(/-+$/g, "");
                         console.log(rowID);
                         try {
                           return rowID;
