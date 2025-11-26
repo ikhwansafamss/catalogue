@@ -45,6 +45,12 @@ function cleanData(s) {
     return s
 }
 
+function getQueryParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    console.log(params.get(name));
+    return params.get(name);
+}
+
 // hidden child rows, see https://datatables.net/examples/api/row_details.html
 function format(rowData) {
     // `rowData` is the original data object for the row
@@ -162,6 +168,8 @@ $.get(jsonPath, function(contents) {
                 let i = 0;
                 for (key in results.data[0]){
                     if (key){
+                        const colKey = key;
+                        console.log(key);
                         i += 1;
                         let visible = initiallyVisible.includes(key) ? "" : "invisible-col";
                         let classStr = `toggle-vis ${visible}`.trim();
@@ -173,7 +181,18 @@ $.get(jsonPath, function(contents) {
                             orderable: ["(Collection + ) Call Number", "Call Number", "Library"].includes(key) ? false: true,
                             type: "natural-ci",  // adapted version of https://datatables.net/plug-ins/sorting/natural
                             render: function (data, type, row, meta) {
-                                return '<div class="tablecell-content">' + data + '</div>';
+                                if (colKey === "(Collection + ) Call Number"){
+                                    //console.log(row);
+                                    let city = row["City"].trim();
+                                    let lib = String(row["Library"]).trim().replace(/’/g, "'");
+                                    let callNo = String(row["(Collection + ) Call Number"]);
+                                    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+                                    const baseUrl = window.location.origin + window.location.pathname;
+                                    const href = `${baseUrl}?id=${encodeURIComponent(rowID)}`;
+                                    return `<div class="tablecell-content"><a href="${href}">${data}</a></div>`;
+                                } else {
+                                    return '<div class="tablecell-content">' + data + '</div>';
+                                }
                             }
                         });
                     };
@@ -198,6 +217,49 @@ $.get(jsonPath, function(contents) {
                     title: "Description"
                 };
                 columns.push(descrCol);
+                // add a hidden ID column:
+                let idCol = {
+                    render: (data, type, row) => {
+                        let city = row["City"].trim();
+                        let lib = String(row["Library"]).trim().replace(/’/g, "'");
+                        let callNo = String(row["(Collection + ) Call Number"]);
+                        let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+                        console.log(rowID);
+                        try {
+                          return rowID;
+                        } catch(err) {
+                            console.log(err);
+                            console.log("lib: "+lib);
+                            console.log("city: "+city);
+                            console.log("callNo: "+callNo);
+                            return "";
+                        }
+                    },
+                    visible: false, 
+                    title: "_id"
+                }
+                columns.push(idCol);
+                /*
+                // add a column for URL query parameter search:
+                let searchCol = {
+                    render: (data, type, row) => {
+                        let city = row["City"].trim();
+                        let lib = String(row["Library"]).trim().replace(/’/g, "'");
+                        let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
+                        try {
+                          return city + " " + lib +" " + callNo;
+                        } catch(err) {
+                            console.log(err);
+                            console.log("lib: "+lib);
+                            console.log("city: "+city);
+                            console.log("callNo: "+callNo);
+                            return "";
+                        }
+                    },
+                    visible: false, 
+                    title: "Search"
+                };
+                columns.push(searchCol);*/
                 toggleStr += `<a class="toggle-vis invisible-col" data-column="${i+1}">Description</a><span class="single-triangle"></span>`;
                 // Then, pass the data to the datatable:
                 let data = preprocessData(results.data);
@@ -241,6 +303,38 @@ $.get(jsonPath, function(contents) {
                         
                     });
                 });
+                /*// check for URL query params:
+                console.log("checking for query params");
+                const searchTerm = getQueryParam('search');
+                if (searchTerm) {
+                    //table.search(searchTerm.replace(/[^a-zA-Z0-9 ]/g, " "), false, true);
+                    table.column(table.columns.length-1).search(searchTerm.replace(/[^a-zA-Z0-9 ]/g, " "), false, true);
+                    //table.columns().search('');
+                    table.draw();
+                }*/
+                // select the row id: 
+                const rowID = getQueryParam('id');
+                const idColumnIndex = table.column('_id:title').index();
+                if (rowID) {
+                    // search ONLY the _id column
+                    table.column(idColumnIndex).search(rowID, false, true);  
+                    table.draw();                    
+
+                    // auto-scroll to the row and show the details:
+                    setTimeout(() => {
+                        const rowNode = table.row({ filter: 'applied' }).node();
+                        if (rowNode) {
+                            rowNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            let row = table.row(rowNode);
+                            console.log(row);
+                            console.log(row.child)
+                            row.child(format(row.data())).show();
+                        }
+
+                    }, 200);
+
+                }
+
             }
         });
     });
@@ -253,6 +347,10 @@ $('#resetFilters').on('click', () => {
   table.search('');
   table.columns().search('');
   table.draw();
+
+  // Remove all query parameters from the URL (no reload)
+  const cleanUrl = window.location.origin + window.location.pathname;
+  window.history.replaceState({}, document.title, cleanUrl);
   return false;
 })
 
@@ -260,6 +358,7 @@ $('#toggleColumns').on('click', () => {
   $('#toggleDiv').toggle();
   return false;
 })
+
 
 
 /**********************************
@@ -340,6 +439,9 @@ Papa.parse('data/library_coordinates.tsv', {
                     table.search('');
                     table.columns().search('');
                     table.draw();
+                    // Remove all query parameters from the URL (no reload)
+                    const cleanUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
                     return false;
                 });
                 markers.addLayer(marker);
@@ -355,6 +457,9 @@ map.getPanes().popupPane.addEventListener('click', (e) => {
     // reset existing filters:
     table.search('');
     table.columns().search('');
+    // Remove all query parameters from the URL (no reload)
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
 
     console.log(e);
     //const a = e.target.closest('a.place-filter');
