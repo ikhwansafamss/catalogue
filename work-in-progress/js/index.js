@@ -59,11 +59,15 @@ function format(rowData) {
     // get the description from the descriptions dictionary:
     let city = rowData["City"].trim();
     let lib = String(rowData["Library"]).trim().replace(/’/g, "'");
-    let callNo = normalizeCallNo(String(rowData["(Collection + ) Call Number"]));
+    let callNo = String(rowData["(Collection + ) Call Number"]);
     console.log("city:" + city);
     console.log("lib:" + lib);
     console.log("callNo:" + callNo);
-    let descr = descriptions[city][lib][callNo];
+    let descr = descriptions[city][lib][normalizeCallNo(callNo)];
+
+    let rowID = `${city}-${lib}-${callNo}`.replace(/[ .()/?]+/g, "-").replace(/-+$/g, "");
+    const baseUrl = window.location.origin + window.location.pathname;
+    const href = `${baseUrl}?id=${encodeURIComponent(rowID)}`;
     
 
     /*let hiddenRowHtml = '<dl class="columns" dir="auto">';*/
@@ -90,6 +94,10 @@ function format(rowData) {
             <dl dir="auto">
               <dt><strong>Description:</strong></dt>
               <dd>${descr}</dd>
+            </dl>
+            <dl dir="auto">
+              <dt><strong>Permalink:</strong></dt>
+              <dd><a href="${href}">${decodeURI(href)}</a></dd>
             </dl>
           </div>
         </div>`
@@ -202,9 +210,9 @@ $.get(jsonPath, function(contents) {
                     render: (data, type, row) => {
                         let city = row["City"].trim();
                         let lib = String(row["Library"]).trim().replace(/’/g, "'");
-                        let callNo = normalizeCallNo(String(row["(Collection + ) Call Number"]));
+                        let callNo = String(row["(Collection + ) Call Number"]);
                         try {
-                          return descriptions[city][lib][callNo];
+                            return descriptions[city][lib][normalizeCallNo(callNo)];
                         } catch(err) {
                             console.log(err);
                             console.log("lib: "+lib);
