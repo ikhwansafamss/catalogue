@@ -2,7 +2,8 @@ import requests
 import time
 import csv
 
-geonames_username = "pverkind"
+with open("./geonames_username.txt", encoding="utf-8") as file:
+    geonames_username = file.read().strip()
 
 def get_coordinates(place, username=geonames_username, fuzzy=0, timeout=1.5, more_args={}):
   """This function gets a single set of coordinates from the geonames API.
