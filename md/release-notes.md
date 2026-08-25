@@ -2,7 +2,7 @@
 
 This website is updated and released periodically. 
 
-The current release is **[v2026-06-23](https://ikhwansafamss.github.io/catalogue/v2026-06-23)**
+The current release is **[v2026-08-25](https://ikhwansafamss.github.io/catalogue/v2026-08-25)**
 
 Please always cite the website including its release number 
 ([https://ikhwansafamss.github.io/catalogue](https://ikhwansafamss.github.io/catalogue) 
@@ -11,6 +11,7 @@ Released versions of the website are stable and will remain available.
 
 ## Release list:
 <!-- INSERT NEWER VERSION BELOW THIS -->
+* [v2026-08-25](https://ikhwansafamss.github.io/catalogue/v2026-08-25)
 * [v2026-06-23](https://ikhwansafamss.github.io/catalogue/v2026-06-23)
 * [v2026-01-14](https://ikhwansafamss.github.io/catalogue/v2026-01-14)
 * [v2025-10-22](https://ikhwansafamss.github.io/catalogue/v2025-10-22)
