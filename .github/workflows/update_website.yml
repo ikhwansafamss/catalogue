@@ -5,15 +5,16 @@ on:
 jobs:
   build-html:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # latest commit only
 
       - name: install python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
           
@@ -50,7 +51,4 @@ jobs:
 
       - name: push any changes
         if: steps.check_changes.outputs.changed == 'true'
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
-           branch: main
+        run: git push origin HEAD:main
